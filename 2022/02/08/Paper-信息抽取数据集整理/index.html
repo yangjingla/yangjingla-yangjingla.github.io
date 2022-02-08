@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="IE Datasets Zoo2022-02-08-Update:  首先需要制定哪一些的条目，重在积累（多注意中文数据的搜集），慢慢的完善数据，留给实验室用，同时也给自己用。  TODO: 能够下载的数据集，全部下载下来，使用预处理的代码进行处理好。在本地的硬盘里面留一份，其次是云空间备份， 然后对于所有的更换连接。  Named Entity Recognition   Datasets Do">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paper-信息抽取数据集整理">
+<meta property="og:url" content="http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/index.html">
+<meta property="og:site_name" content="Yang Jing">
+<meta property="og:description" content="IE Datasets Zoo2022-02-08-Update:  首先需要制定哪一些的条目，重在积累（多注意中文数据的搜集），慢慢的完善数据，留给实验室用，同时也给自己用。  TODO: 能够下载的数据集，全部下载下来，使用预处理的代码进行处理好。在本地的硬盘里面留一份，其次是云空间备份， 然后对于所有的更换连接。  Named Entity Recognition   Datasets Do">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-08T11:19:50.000Z">
+<meta property="article:modified_time" content="2022-02-08T12:31:36.399Z">
+<meta property="article:author" content="yangjing">
+<meta property="article:tag" content="Paper">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.jpg">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.jpg" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg">
+        
+      
+    
+    <!-- title -->
+    <title>Paper-信息抽取数据集整理</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Yang Jing" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/reading/">Reading</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/recording/">Recording</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2022/02/08/Life-2022%E5%B9%B4%E5%81%87%E6%9C%9F%E4%BA%8C%E4%B8%89%E4%BA%8B/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&text=Paper-信息抽取数据集整理"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&title=Paper-信息抽取数据集整理"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&is_video=false&description=Paper-信息抽取数据集整理"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Paper-信息抽取数据集整理&body=Check out this article: http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&title=Paper-信息抽取数据集整理"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&title=Paper-信息抽取数据集整理"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&title=Paper-信息抽取数据集整理"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&title=Paper-信息抽取数据集整理"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&name=Paper-信息抽取数据集整理&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&t=Paper-信息抽取数据集整理"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#IE-Datasets-Zoo"><span class="toc-number">1.</span> <span class="toc-text">IE Datasets Zoo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Named-Entity-Recognition"><span class="toc-number">1.1.</span> <span class="toc-text">Named Entity Recognition</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Relation-Extraction"><span class="toc-number">1.2.</span> <span class="toc-text">Relation Extraction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Event-Extraction"><span class="toc-number">1.3.</span> <span class="toc-text">Event Extraction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ToolKit"><span class="toc-number">1.4.</span> <span class="toc-text">ToolKit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#More-Datasets"><span class="toc-number">1.5.</span> <span class="toc-text">More Datasets</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Paper-信息抽取数据集整理
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">yangjing</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-02-08T11:19:50.000Z" itemprop="datePublished">2022-02-08</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Paper/" rel="tag">Paper</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="IE-Datasets-Zoo"><a href="#IE-Datasets-Zoo" class="headerlink" title="IE Datasets Zoo"></a>IE Datasets Zoo</h1><p>2022-02-08-Update:</p>
+<ul>
+<li>首先需要制定哪一些的条目，重在积累（多注意中文数据的搜集），慢慢的完善数据，留给实验室用，同时也给自己用。</li>
+</ul>
+<p>TODO: 能够下载的数据集，全部下载下来，使用预处理的代码进行处理好。在本地的硬盘里面留一份，其次是云空间备份， 然后对于所有的更换连接。 </p>
+<h2 id="Named-Entity-Recognition"><a href="#Named-Entity-Recognition" class="headerlink" title="Named Entity Recognition"></a>Named Entity Recognition</h2><table>
+<thead>
+<tr>
+<th>Datasets</th>
+<th>Domain</th>
+<th>Language</th>
+<th>Intro</th>
+<th>Ent Types</th>
+<th>PaperWithCode</th>
+<th>Train/Dev/Test(Preprocess Code)</th>
+<th>Download</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CoNLL02</td>
+<td>News</td>
+<td>English</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://www.clips.uantwerpen.be/conll2002/ner/">download</a></td>
+</tr>
+<tr>
+<td>CoNLL03</td>
+<td>News</td>
+<td>English</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://www.clips.uantwerpen.be/conll2003/ner/">download</a></td>
+</tr>
+<tr>
+<td>ConNLL03</td>
+<td>News</td>
+<td>English</td>
+<td></td>
+<td>LOC、ORG、PER、MISC</td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://catalog.ldc.upenn.edu/docs/LDC2013T19/OntoNotes-Release-5.0.pdf">doc</a></td>
+<td><a target="_blank" rel="noopener" href="https://www.clips.uantwerpen.be/conll2003/ner/">download</a></td>
+</tr>
+<tr>
+<td>CoNLL 2017</td>
+<td>News</td>
+<td></td>
+<td>Multilingual: has developed treebanks for 40+ languages with cross-linguistically consistent annotation and recoverability of the original raw texts</td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://aclweb.org/portal/content/conll-2017-shared-task-multilingual-parsing-raw-text-universal-dependencies">download</a></td>
+</tr>
+<tr>
+<td>Cross-lingual Name Tagging</td>
+<td>Wiki</td>
+<td>282 Languages</td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://aclanthology.org/P17-1178.pdf">Doc</a></td>
+<td><a target="_blank" rel="noopener" href="http://nlp.cs.rpi.edu/wikiann">download</a></td>
+</tr>
+<tr>
+<td>OntoNotes4.0</td>
+<td>News</td>
+<td>English,Chinese,Arabic</td>
+<td></td>
+<td>PERSON、NORP、 LOC、 GPE、 PRODUCT、 EVENT、LAW</td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://catalog.ldc.upenn.edu/docs/LDC2011T03/OntoNotes-Release-4.0.pdf">doc</a></td>
+<td><a target="_blank" rel="noopener" href="https://catalog.ldc.upenn.edu/LDC2011T03">download</a></td>
+</tr>
+<tr>
+<td>OntoNotes5.0</td>
+<td>News</td>
+<td>English, Chinese,Arabic</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://catalog.ldc.upenn.edu/ldc2013t19">download</a></td>
+</tr>
+<tr>
+<td>NNE [2019]</td>
+<td>News</td>
+<td>English</td>
+<td>A Dataset for Nested Named Entity Recognition in English Newswire</td>
+<td></td>
+<td></td>
+<td></td>
+<td><a href="%E2%80%A3">download</a></td>
+</tr>
+<tr>
+<td>MSRA</td>
+<td>新闻</td>
+<td>中文</td>
+<td></td>
+<td>人物、地点、机构</td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/GuocaiL/nlp_corpus/tree/main/open_ner_data/MSRA">download</a></td>
+</tr>
+<tr>
+<td>WeiBo</td>
+<td>微博</td>
+<td>中文</td>
+<td></td>
+<td>地名、人名、机构名、行政区名</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Resume</td>
+<td>简历</td>
+<td>中文</td>
+<td></td>
+<td>人名、国籍、籍贯、种族、专业、学位、机构、职称</td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/GuocaiL/nlp_corpus/tree/main/open_ner_data/ResumeNER">download</a></td>
+</tr>
+<tr>
+<td>BosonNER</td>
+<td>新闻</td>
+<td>中文</td>
+<td></td>
+<td>时间、地点、人名、组织名、公司名、产品名</td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/GuocaiL/nlp_corpus/tree/main/open_ner_data/boson">download</a></td>
+</tr>
+<tr>
+<td>ClueNER</td>
+<td>新闻</td>
+<td>中文</td>
+<td></td>
+<td>组织、人名、地址、公司、政府、书籍、游戏、电影、职位、景点</td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/GuocaiL/nlp_corpus/tree/main/open_ner_data/cluener_public">download</a></td>
+</tr>
+<tr>
+<td>People Daily</td>
+<td>新闻</td>
+<td>中文</td>
+<td></td>
+<td>地名、机构名、人名</td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/GuocaiL/nlp_corpus/tree/main/open_ner_data/people_daily">download</a></td>
+</tr>
+<tr>
+<td>CCKS2019-Task1</td>
+<td>电子病历</td>
+<td>中文</td>
+<td>CCKS2019评测任务一，即“面向中文电子病历的命名实体识别”的数据集</td>
+<td>实验室检验、影像检查、手术、疾病和诊断、药物、解剖部位</td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/GuocaiL/nlp_corpus/tree/main/open_ner_data/yidu-s4k">download</a></td>
+</tr>
+<tr>
+<td>CCKS2020-Task</td>
+<td></td>
+<td>中文</td>
+<td>面向试验鉴定的命名实体数据集</td>
+<td>试验要素、性能指标、系统组成、任务场景</td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://www.biendata.xyz/competition/ccks_2020_8/">download</a></td>
+</tr>
+<tr>
+<td>CCKS2017-2020</td>
+<td>电子病历</td>
+<td>中文</td>
+<td></td>
+<td>症状和体征、检查和检验、疾病和诊断、治疗、身体部位</td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://www.biendata.xyz/competition/CCKS2017_2">download</a></td>
+</tr>
+<tr>
+<td>CCKS2018</td>
+<td>电子病历</td>
+<td>中文</td>
+<td></td>
+<td>解剖部位、症状描述、独立症状、药物、手术</td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://www.biendata.xyz/competition/CCKS2018_1">download</a></td>
+</tr>
+<tr>
+<td>CCKS2019</td>
+<td>电子病历</td>
+<td>中文</td>
+<td></td>
+<td>疾病、诊断、检查、检验、手术、药物、解剖部</td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/GuocaiL/nlp_corpus/tree/main/open_ner_data/2020_ccks_ner%E3%80%82">download</a></td>
+</tr>
+<tr>
+<td>CCKS2020</td>
+<td>电子病历</td>
+<td>中文</td>
+<td></td>
+<td>疾病、诊断、检查、检验、手术、药物、解剖部位</td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://www.biendata.xyz/competition/ccks_2020_2_1/">download</a></td>
+</tr>
+</tbody></table>
+<h2 id="Relation-Extraction"><a href="#Relation-Extraction" class="headerlink" title="Relation Extraction"></a>Relation Extraction</h2><table>
+<thead>
+<tr>
+<th>Datasets</th>
+<th>Domain</th>
+<th>Language</th>
+<th>Introduction</th>
+<th>Rel Types</th>
+<th>PaperWithCode</th>
+<th>Train/Dev/Test(Preprocess Code)</th>
+<th>Download</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ACE04</td>
+<td></td>
+<td>English</td>
+<td></td>
+<td></td>
+<td></td>
+<td>常用的分割方式：<a target="_blank" rel="noopener" href="https://github.com/dwadden/dygiepp">link1</a>, <a target="_blank" rel="noopener" href="https://github.com/LorrinWWW/two-are-better-than-one">link2</a>)</td>
+<td><a target="_blank" rel="noopener" href="https://catalog.ldc.upenn.edu/LDC2005T09">download</a></td>
+</tr>
+<tr>
+<td>ACE05</td>
+<td></td>
+<td>English</td>
+<td></td>
+<td></td>
+<td></td>
+<td>常用的分割方式：<a target="_blank" rel="noopener" href="https://github.com/lavis-nlp/spert">link</a></td>
+<td><a target="_blank" rel="noopener" href="https://catalog.ldc.upenn.edu/LDC2006T06">download</a></td>
+</tr>
+<tr>
+<td>Conll04</td>
+<td>News</td>
+<td>English</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="http://lavis.cs.hs-rm.de/storage/spert/public/datasets/conll04/">download</a></td>
+</tr>
+<tr>
+<td>GENIA</td>
+<td>Bio</td>
+<td>English</td>
+<td>The GENIA corpus is the primary collection of biomedical literature compiled and annotated within the scope of the GENIA project. The corpus was created to support the development and evaluation of information extraction and text mining systems for the domain of molecular biology.</td>
+<td></td>
+<td></td>
+<td></td>
+<td>[download]</td>
+</tr>
+<tr>
+<td>ADE</td>
+<td>Bio , Drug</td>
+<td>English</td>
+<td>a benchmark corpus to support the automatic extraction of drug-related adverse effects from medical case reports.</td>
+<td></td>
+<td></td>
+<td>注意这里是使用十折交叉验证</td>
+<td><a target="_blank" rel="noopener" href="http://lavis.cs.hs-rm.de/storage/spert/public/datasets/ade/">download</a></td>
+</tr>
+<tr>
+<td>Chempot</td>
+<td>BioPapers</td>
+<td>English</td>
+<td>ChemProt consists of 1,820 PubMed abstracts with chemical-protein interactions annotated by domain experts and was used in the BioCreative VI text mining chemical-protein interactions shared task.</td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://biocreative.bioinformatics.udel.edu/news/corpora/chemprot-corpus-biocreative-vi/">download</a></td>
+</tr>
+<tr>
+<td>SciERC</td>
+<td>SciPapers</td>
+<td>English</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="http://lavis.cs.hs-rm.de/storage/spert/public/datasets/scierc/">download</a></td>
+</tr>
+<tr>
+<td>DialogRE</td>
+<td>Film</td>
+<td>English,Chinese</td>
+<td>The first human-annotated dialogue-based relation extraction dataset, containing 1,788 dialogues originating from the complete transcripts of a famous American television situation comedy Friends.</td>
+<td></td>
+<td></td>
+<td>5,936 / 1,928/1,858  (36 rels)</td>
+<td><a target="_blank" rel="noopener" href="https://dataset.org/dialogre/">download</a></td>
+</tr>
+<tr>
+<td>DocRED</td>
+<td>News</td>
+<td>English</td>
+<td>DocRED是基于维基百科的文档级关系抽取数据集，数据集中每个文档都被标注了命名实体提及、核心参考信息、句内和句间关系以及支持证据。关系类型涉及科学、艺术、时间、个人生活在内的96种Wikidata关系类型。</td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://huggingface.co/datasets/docred">download</a></td>
+</tr>
+<tr>
+<td>TACRED</td>
+<td>News</td>
+<td>English</td>
+<td>TACRED is a large-scale relation extraction dataset with 106,264 examples built over newswire and web text. Examples in TACRED cover 41 relation types as used in the TAC KBP challenges</td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://nlp.stanford.edu/projects/tacred/">download</a></td>
+</tr>
+<tr>
+<td>CDR</td>
+<td>Sci-Biometrics</td>
+<td>English</td>
+<td>a human-annotated dataset in the biomedical domain. It consists of 500 documents for train- ing. The task is to predict the binary interactions between Chemical and Disease concepts.</td>
+<td></td>
+<td></td>
+<td>数据预处理处理：<a target="_blank" rel="noopener" href="https://github.com/fenchri/edge-oriented-graph">link</a></td>
+<td><a href="">download</a></td>
+</tr>
+<tr>
+<td>GDA</td>
+<td>Sci-Biometrics</td>
+<td>English</td>
+<td>a large-scale dataset in the biomedical domain. It contains of 29,92 articles.The task is to predict the binary interactions between Gene and Disease concepts.</td>
+<td></td>
+<td></td>
+<td>数据预处理：<a target="_blank" rel="noopener" href="https://github.com/fenchri/edge-oriented-graph">link</a></td>
+<td><a href="">download</a></td>
+</tr>
+<tr>
+<td>SciREX</td>
+<td>Sci-CS</td>
+<td>English</td>
+<td>SCIREX is a document level IE dataset that encompasses multiple IE tasks, including salient entity identification and document level N-ary relation identification from scientific articles. The dataset is annotated by integrating automatic and human annotations, leveraging existing scientific knowledge resources</td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://paperswithcode.com/dataset/scirex">sota</a></td>
+<td>数据预处理：[link]</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/allenai/SciREX/blob/master/scirex_dataset/release_data.tar.gz">download</a></td>
+</tr>
+<tr>
+<td>SciCN</td>
+<td>Sci-CS</td>
+<td>中文</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>[download]</td>
+</tr>
+<tr>
+<td>NYT-10</td>
+<td>Wiki</td>
+<td>English</td>
+<td>由NYT corpus 在2010年基于Freebase远程监督得到的，共包含founders、place_of_birth在内的53种关系（包括一种NA</td>
+<td></td>
+<td></td>
+<td>数据划分和预处理: <a target="_blank" rel="noopener" href="https://github.com/weizhepei/CasRel">CasRel</a></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/thunlp/OpenNRE/blob/master/benchmark/download_nyt10.sh">download</a></td>
+</tr>
+<tr>
+<td>WebNLG</td>
+<td>Wiki</td>
+<td>English</td>
+<td>the WebNLG challenge consists in mapping data to text. The training data consists of Data/Text pairs where the data is a set of triples extracted from DBpedia and the text is a verbalisation of these triples</td>
+<td></td>
+<td></td>
+<td>数据划分和预处理：<a target="_blank" rel="noopener" href="https://github.com/weizhepei/CasRel">CasRel</a></td>
+<td><a target="_blank" rel="noopener" href="https://drive.google.com/file/d/1zISxYa-8ROe2Zv8iRc82jY9QsQrfY1Vj/view">download</a></td>
+</tr>
+<tr>
+<td>SemEval-2010-Task8</td>
+<td>News</td>
+<td>English</td>
+<td>SemEval数据集是2010年国际语义评测大会中Task8任务所使用的数据集，该数据集包括8000个训练样本，2717个测试样本</td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://paperswithcode.com/dataset/semeval-2010-task-8">link</a></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/thunlp/OpenNRE/blob/master/benchmark/download_semeval.sh">download</a></td>
+</tr>
+<tr>
+<td>FewRel</td>
+<td>Wiki</td>
+<td>English</td>
+<td>该数据集包括100个关系类别、70,000个关系实例。每句的平均长度为24.99</td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/thunlp/OpenNRE/blob/master/benchmark/download_fewrel.sh">download</a></td>
+</tr>
+<tr>
+<td>Wiki80</td>
+<td>Wiki</td>
+<td>English</td>
+<td>Wiki80是从数据集FewRel上提取的一个关系数据集，共包含location、part of、follows等80种关系，每种关系个数均为700，共56000个样本。</td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/thunlp/OpenNRE/blob/master/benchmark/download_wiki80.sh">download</a></td>
+</tr>
+<tr>
+<td>DuIE2.0</td>
+<td>新闻</td>
+<td>中文</td>
+<td>数据集包含超过43万三元组数据、21万中文句子及48个预定义的关系类型</td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/PaddlePaddle/PaddleNLP/tree/develop/examples/information_extraction/DuIE">download</a></td>
+</tr>
+<tr>
+<td>CCKS2019</td>
+<td>电子病历</td>
+<td>中文</td>
+<td>层级关系分类任务，包括三大类(亲属关系、社交关系、师生关系)，四中类(配偶、血亲、姻亲、友谊）、35小类(现夫、前妻)种关系类型</td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/SUDA-HLT/IPRE">download</a></td>
+</tr>
+<tr>
+<td>Chinese Literature Text</td>
+<td>文学作品</td>
+<td>中文</td>
+<td>面向中文文学的一个实体关系数据集，标注了物体、人名、地名、时间名、容量名、组织和摘要共7类实体，位于、部分、家庭、概括、社会、拥有、使用、制造、邻接等9类实体关系</td>
+<td></td>
+<td></td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/lancopku/Chinese-Literature-NER-RE-Dataset/tree/master/relation_extraction">download</a></td>
+</tr>
+</tbody></table>
+<h2 id="Event-Extraction"><a href="#Event-Extraction" class="headerlink" title="Event Extraction"></a>Event Extraction</h2><ul>
+<li>TODO</li>
+</ul>
+<h2 id="ToolKit"><a href="#ToolKit" class="headerlink" title="ToolKit"></a>ToolKit</h2><table>
+<thead>
+<tr>
+<th>ToolKit</th>
+<th>Intro</th>
+<th>Repo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Spacy</td>
+<td>英文NLP工具</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/explosion/spaCy">homepage</a></td>
+</tr>
+<tr>
+<td>FastHAN</td>
+<td>中文NLP工具</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/fastnlp/fastHan">homepage</a></td>
+</tr>
+<tr>
+<td>HanNLP</td>
+<td>中文NLP工具</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/hankcs/HanLP">homepage</a></td>
+</tr>
+<tr>
+<td>ZJU-DEEPKG</td>
+<td>知识图谱抽取</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/zjunlp/DeepKE">homepage</a></td>
+</tr>
+<tr>
+<td>THU-NRE</td>
+<td>信息抽取工具</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/thunlp/OpenNRE">homepage</a></td>
+</tr>
+</tbody></table>
+<h2 id="More-Datasets"><a href="#More-Datasets" class="headerlink" title="More Datasets"></a>More Datasets</h2><table>
+<thead>
+<tr>
+<th>Forum</th>
+<th>Intro</th>
+<th>Websit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Huggface Datasets</td>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://huggingface.co/datasets?sort=downloads&amp;search=web">https://huggingface.co/datasets?sort=downloads&amp;search=web</a></td>
+</tr>
+<tr>
+<td>Github</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Kaggle</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/reading/">Reading</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/recording/">Recording</a></li>
+         
+          <li><a href="/links/">Links</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#IE-Datasets-Zoo"><span class="toc-number">1.</span> <span class="toc-text">IE Datasets Zoo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Named-Entity-Recognition"><span class="toc-number">1.1.</span> <span class="toc-text">Named Entity Recognition</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Relation-Extraction"><span class="toc-number">1.2.</span> <span class="toc-text">Relation Extraction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Event-Extraction"><span class="toc-number">1.3.</span> <span class="toc-text">Event Extraction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ToolKit"><span class="toc-number">1.4.</span> <span class="toc-text">ToolKit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#More-Datasets"><span class="toc-number">1.5.</span> <span class="toc-text">More Datasets</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&text=Paper-信息抽取数据集整理"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&title=Paper-信息抽取数据集整理"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&is_video=false&description=Paper-信息抽取数据集整理"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Paper-信息抽取数据集整理&body=Check out this article: http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&title=Paper-信息抽取数据集整理"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&title=Paper-信息抽取数据集整理"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&title=Paper-信息抽取数据集整理"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&title=Paper-信息抽取数据集整理"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&name=Paper-信息抽取数据集整理&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/&t=Paper-信息抽取数据集整理"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2022
+    yangjing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/reading/">Reading</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/recording/">Recording</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'yangjingla/comments';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

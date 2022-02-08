@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Git 加速镜像网站 FastGit: https:&#x2F;&#x2F;doc.fastgit.org&#x2F;zh-cn&#x2F; GitClone: gitclone.comhttps:&#x2F;&#x2F;gitclone.com&#x2F; Gitee: https:&#x2F;&#x2F;gitee.com&#x2F;mirrors  仓库下载加速将原始Repo链接之中的 “ https:&#x2F;&#x2F;github.com” 替换成对应的镜像网站  https:&#x2F;&#x2F;github.com">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Notes-访问Git加速&amp;常见的Git命令">
+<meta property="og:url" content="http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="Yang Jing">
+<meta property="og:description" content="Git 加速镜像网站 FastGit: https:&#x2F;&#x2F;doc.fastgit.org&#x2F;zh-cn&#x2F; GitClone: gitclone.comhttps:&#x2F;&#x2F;gitclone.com&#x2F; Gitee: https:&#x2F;&#x2F;gitee.com&#x2F;mirrors  仓库下载加速将原始Repo链接之中的 “ https:&#x2F;&#x2F;github.com” 替换成对应的镜像网站  https:&#x2F;&#x2F;github.com">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-08T04:45:07.000Z">
+<meta property="article:modified_time" content="2022-02-08T11:12:20.219Z">
+<meta property="article:author" content="yangjing">
+<meta property="article:tag" content="Notes">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.jpg">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.jpg" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg">
+        
+      
+    
+    <!-- title -->
+    <title>Notes-访问Git加速&amp;常见的Git命令</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Yang Jing" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/reading/">Reading</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/recording/">Recording</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2022/02/08/Life-%E6%8A%80%E6%9C%AF%E4%B8%8E%E7%A4%BE%E4%BC%9A%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2022/01/02/hello-world/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&text=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&title=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&is_video=false&description=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Notes-访问Git加速&amp;常见的Git命令&body=Check out this article: http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&title=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&title=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&title=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&title=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&name=Notes-访问Git加速&amp;常见的Git命令&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&t=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Git-%E5%8A%A0%E9%80%9F"><span class="toc-number">1.</span> <span class="toc-text">Git 加速</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%95%9C%E5%83%8F%E7%BD%91%E7%AB%99"><span class="toc-number">1.1.</span> <span class="toc-text">镜像网站</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%93%E5%BA%93%E4%B8%8B%E8%BD%BD%E5%8A%A0%E9%80%9F"><span class="toc-number">1.2.</span> <span class="toc-text">仓库下载加速</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E5%8A%A0%E9%80%9F"><span class="toc-number">1.3.</span> <span class="toc-text">文件下载加速</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%8D%E6%89%8B%E5%8A%A8%E6%9B%BF%E6%8D%A2%E6%96%B9%E6%B3%95-%E4%B8%8D%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.4.</span> <span class="toc-text">免手动替换方法(不建议)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E4%BE%9Bweb%E7%95%8C%E9%9D%A2%E7%9A%84github%E8%B5%84%E6%BA%90%E5%8A%A0%E9%80%9F%E7%BD%91%E7%AB%99%EF%BC%9A"><span class="toc-number">1.5.</span> <span class="toc-text">提供web界面的github资源加速网站：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Git-Sheet"><span class="toc-number">2.</span> <span class="toc-text">Git Sheet</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%88%99"><span class="toc-number">2.1.</span> <span class="toc-text">原则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E4%B8%8E%E6%A0%87%E7%AD%BE-checkout-amp-branch"><span class="toc-number">2.2.</span> <span class="toc-text">分支与标签 (checkout &amp; branch)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E4%B8%8E%E9%87%8D%E7%BD%AE-merge-amp-rebase"><span class="toc-number">2.3.</span> <span class="toc-text">合并与重置(merge &amp; rebase)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E5%92%8C%E5%8F%91%E5%B8%83-fetch-amp-pull"><span class="toc-number">2.4.</span> <span class="toc-text">更新和发布(fetch &amp; pull)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%B0%E5%BD%95%E4%B8%8E%E6%92%A4%E9%94%80-log-amp-reset"><span class="toc-number">2.5.</span> <span class="toc-text">记录与撤销 ( log &amp; reset)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">3.</span> <span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Notes-访问Git加速&amp;常见的Git命令
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">yangjing</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-02-08T04:45:07.000Z" itemprop="datePublished">2022-02-08</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Notes/" rel="tag">Notes</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="Git-加速"><a href="#Git-加速" class="headerlink" title="Git 加速"></a>Git 加速</h1><h2 id="镜像网站"><a href="#镜像网站" class="headerlink" title="镜像网站"></a>镜像网站</h2><ul>
+<li>FastGit: <a target="_blank" rel="noopener" href="https://doc.fastgit.org/zh-cn/">https://doc.fastgit.org/zh-cn/</a></li>
+<li>GitClone: <a target="_blank" rel="noopener" href="http://gitclone.com/">gitclone.com</a><a target="_blank" rel="noopener" href="https://gitclone.com/">https://gitclone.com/</a></li>
+<li>Gitee: <a target="_blank" rel="noopener" href="https://gitee.com/mirrors">https://gitee.com/mirrors</a></li>
+</ul>
+<h2 id="仓库下载加速"><a href="#仓库下载加速" class="headerlink" title="仓库下载加速"></a>仓库下载加速</h2><p>将原始Repo链接之中的 “ <a target="_blank" rel="noopener" href="https://github.com/kubernetes/kubernetes.git">https://github.com</a>” 替换成对应的镜像网站</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubernetes/kubernetes.git">https://github.com</a>/repo  →  <a target="_blank" rel="noopener" href="https://github.com.cnpmjs.org/kubernetes/kubernetes.git">https://github.com.cnpmjs.org</a>/repo</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubernetes/kubernetes.git">https://github.com</a>/repo  → <a target="_blank" rel="noopener" href="https://hub.fastgit.org/kubernetes/kubernetes.git">https://hub.fastgit.org</a>/repo</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubernetes/kubernetes.git">https://github.com</a>/repo  → <a target="_blank" rel="noopener" href="https://gitclone.com/github.com/kubernetes/kubernetes">https://gitclone.com/github.com</a>/repo</li>
+</ul>
+<p>举例：  我们可以将kubenetes项目clone到本地的时候</p>
+<ul>
+<li>git clone <a target="_blank" rel="noopener" href="https://github.com/kubernetes/kubernetes.git">https://github.com/kubernetes/kubernetes.git</a></li>
+</ul>
+<p>改为以下三种皆可以</p>
+<ul>
+<li>git clone <a target="_blank" rel="noopener" href="https://github.com.cnpmjs.org/kubernetes/kubernetes.git">https://github.com.cnpmjs.org/kubernetes/kubernetes.git</a></li>
+<li>git clone <a target="_blank" rel="noopener" href="https://hub.fastgit.org/kubernetes/kubernetes.git">https://hub.fastgit.org/kubernetes/kubernetes.git</a></li>
+<li>git clone <a target="_blank" rel="noopener" href="https://gitclone.com/github.com/kubernetes/kubernetes">https://gitclone.com/github.com/kubernetes/kubernetes</a></li>
+</ul>
+<h2 id="文件下载加速"><a href="#文件下载加速" class="headerlink" title="文件下载加速"></a>文件下载加速</h2><p>操作方法和上面同理</p>
+<p>举例： 原地址</p>
+<ul>
+<li>wget <a target="_blank" rel="noopener" href="https://github.com/goharbor/harbor/releases/download/v2.0.2/harbor-offline-installer-v2.0.2.tgz">https://github.com/goharbor/harbor/releases/download/v2.0.2/harbor-offline-installer-v2.0.2.tgz</a></li>
+</ul>
+<p>改为皆可以</p>
+<ul>
+<li>wget <a target="_blank" rel="noopener" href="https://hub.fastgit.org/goharbor/harbor/releases/download/v2.0.2/harbor-offline-installer-v2.0.2.tgz">https://hub.fastgit.org/goharbor/harbor/releases/download/v2.0.2/harbor-offline-installer-v2.0.2.tgz</a></li>
+</ul>
+<h2 id="免手动替换方法-不建议"><a href="#免手动替换方法-不建议" class="headerlink" title="免手动替换方法(不建议)"></a>免手动替换方法(不建议)</h2><p>设置全局替换</p>
+<ul>
+<li>git config –global url.”<a target="_blank" rel="noopener" href="https://hub.fastgit.org/">https://hub.fastgit.org</a>“.insteadOf <a target="_blank" rel="noopener" href="https://github.com/">https://github.co</a></li>
+</ul>
+<p>查看git配置信息</p>
+<ul>
+<li>git config –global –list</li>
+</ul>
+<p>取消设置</p>
+<ul>
+<li>git config –global –unset url.<a target="_blank" rel="noopener" href="https://github.com/.insteadof">https://github.com/.insteadof</a></li>
+</ul>
+<h2 id="提供web界面的github资源加速网站："><a href="#提供web界面的github资源加速网站：" class="headerlink" title="提供web界面的github资源加速网站："></a>提供web界面的github资源加速网站：</h2><ul>
+<li>GitHub 文件加速：<a target="_blank" rel="noopener" href="https://gh.api.99988866.xyz/">https://gh.api.99988866.xyz/</a></li>
+<li>Github仓库加速：<a target="_blank" rel="noopener" href="https://github.zhlh6.cn/">https://github.zhlh6.cn/</a></li>
+<li>Github仓库加速：<a target="_blank" rel="noopener" href="http://toolwa.com/github/">http://toolwa.com/github/</a></li>
+</ul>
+<h1 id="Git-Sheet"><a href="#Git-Sheet" class="headerlink" title="Git Sheet"></a>Git Sheet</h1><h2 id="原则"><a href="#原则" class="headerlink" title="原则"></a>原则</h2><ul>
+<li>每次Git提交代码之前，一定要进行功能测试。并且留下详细的注释， 测试的接口， 本地测试历史。提交自己的代码一定要站在合作者的角度，方便其他人员进行对接（团队项目合作的事情：方便他人就是方便自己）。</li>
+<li>要使用Git经常性的提交，原则是一个bug对应一次提交， 一个功能对应一次提交。</li>
+<li>有机会一定要使用分支的功能（ Git）的灵魂之一，否则第一次中间会踩很多很多的坑orz…</li>
+</ul>
+<h2 id="分支与标签-checkout-amp-branch"><a href="#分支与标签-checkout-amp-branch" class="headerlink" title="分支与标签 (checkout &amp; branch)"></a>分支与标签 (checkout &amp; branch)</h2><ul>
+<li>列出所有现有分支</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -av</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>切换分支</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;branch&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>根据当前的头部创建一个新分支</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch &lt;new-branch&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>基于远程分支创建新的跟踪分支</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout --track &lt;remote/branch&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>删除本地分支</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d &lt;branch&gt;</span><br></pre></td></tr></table></figure>
+
+<p>提交标签</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag &lt;tag-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="合并与重置-merge-amp-rebase"><a href="#合并与重置-merge-amp-rebase" class="headerlink" title="合并与重置(merge &amp; rebase)"></a>合并与重置(merge &amp; rebase)</h2><ul>
+<li>命令使用原则<ul>
+<li>如果你想要一个干净的，没有merge commit的线性历史树，那么你应该选择git rebase。  如果你想保留完整的历史记录，并且想要避免重写commit history的风险，你应该选择使用git merge。</li>
+<li>rebase的本质是寻找两个链表的最近公共节点（每个分支是一个链表，每一次提交是一个节点），采用rebase会破坏一些commit 历史。所以，不要在公共的分支之上使用rebase这个命令合并master</li>
+</ul>
+</li>
+<li>将分支 <branch>合并到当前的头部</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge &lt;branch&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将当前的头重新定位到&lt;分支&gt; (不要重新发布已发布的提交！)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase &lt;branch&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>中止重基</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase --abort</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解决冲突后继续重基</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase --continue</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用配置的合并工具解决冲突</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git mergetool</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用编辑器手动解决冲突，并(在解决后)将文件标记为“已解决”。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add &lt;resolved-file&gt;</span><br><span class="line">git rm &lt;resolved-file&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="更新和发布-fetch-amp-pull"><a href="#更新和发布-fetch-amp-pull" class="headerlink" title="更新和发布(fetch &amp; pull)"></a>更新和发布(fetch &amp; pull)</h2><ul>
+<li>显示有关远程</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote show &lt;remote&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>添加名为&lt; Remote &gt;的新远程存储库</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add &lt;shortname&gt; &lt;url&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>从&lt; Remote &gt;下载所有更改，但不要集成到Head中</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch &lt;remote&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>⚠️ （注意pull 和 fetch的区别）下载更改并直接合并/集成到头中</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull &lt;remote&gt; &lt;branch&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在远程上发布本地更改</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push &lt;remote&gt; &lt;branch&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>删除远程上的分支</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -dr &lt;remote/branch&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>发布标签</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push --tags</span><br></pre></td></tr></table></figure>
+
+<h2 id="记录与撤销-log-amp-reset"><a href="#记录与撤销-log-amp-reset" class="headerlink" title="记录与撤销 ( log &amp; reset)"></a>记录与撤销 ( log &amp; reset)</h2><ul>
+<li>显示所有提交，从最新开始</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>显示特定文件随时间的变化</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log -p &lt;file&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>谁在&lt; file &gt;中更改了内容和时间？</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git blame &lt;file&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>放弃工作目录中的所有本地更改。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>还原一个提交(通过产生一个新的具有相反更改的提交)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git revert &lt;commit&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将head重置为上一次提交, 并放弃自那以后的所有变化)(—soft 和 —hard 的区别)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard &lt;commit&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将head重置为上一次提交，并将所有更改保留为未分阶段的更改。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset &lt;commit&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将head重置为上一次提交， 并保存未提交的本地更改。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --keep &lt;commit&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/flyhigher139/Git-Cheat-">https://github.com/flyhigher139/Git-Cheat-</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/yangjingla/Git-Cheat-Sheet">Gitee Cheat Sheet</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f23f72251abc">git rebase 和 git merge 的区别</a></p>
+</li>
+<li><p>Git Cheat Sheet PDF <a target="_blank" rel="noopener" href="https://wac-cdn.atlassian.com/dam/jcr:e7e22f25-bba2-4ef1-a197-53f46b6df4a5/SWTM-2088_Atlassian-Git-Cheatsheet.pdf?cdnVersion=202">DOWNLOAD</a></p>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/reading/">Reading</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/recording/">Recording</a></li>
+         
+          <li><a href="/links/">Links</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Git-%E5%8A%A0%E9%80%9F"><span class="toc-number">1.</span> <span class="toc-text">Git 加速</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%95%9C%E5%83%8F%E7%BD%91%E7%AB%99"><span class="toc-number">1.1.</span> <span class="toc-text">镜像网站</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%93%E5%BA%93%E4%B8%8B%E8%BD%BD%E5%8A%A0%E9%80%9F"><span class="toc-number">1.2.</span> <span class="toc-text">仓库下载加速</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E5%8A%A0%E9%80%9F"><span class="toc-number">1.3.</span> <span class="toc-text">文件下载加速</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%8D%E6%89%8B%E5%8A%A8%E6%9B%BF%E6%8D%A2%E6%96%B9%E6%B3%95-%E4%B8%8D%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.4.</span> <span class="toc-text">免手动替换方法(不建议)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E4%BE%9Bweb%E7%95%8C%E9%9D%A2%E7%9A%84github%E8%B5%84%E6%BA%90%E5%8A%A0%E9%80%9F%E7%BD%91%E7%AB%99%EF%BC%9A"><span class="toc-number">1.5.</span> <span class="toc-text">提供web界面的github资源加速网站：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Git-Sheet"><span class="toc-number">2.</span> <span class="toc-text">Git Sheet</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%88%99"><span class="toc-number">2.1.</span> <span class="toc-text">原则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E4%B8%8E%E6%A0%87%E7%AD%BE-checkout-amp-branch"><span class="toc-number">2.2.</span> <span class="toc-text">分支与标签 (checkout &amp; branch)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E4%B8%8E%E9%87%8D%E7%BD%AE-merge-amp-rebase"><span class="toc-number">2.3.</span> <span class="toc-text">合并与重置(merge &amp; rebase)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E5%92%8C%E5%8F%91%E5%B8%83-fetch-amp-pull"><span class="toc-number">2.4.</span> <span class="toc-text">更新和发布(fetch &amp; pull)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%B0%E5%BD%95%E4%B8%8E%E6%92%A4%E9%94%80-log-amp-reset"><span class="toc-number">2.5.</span> <span class="toc-text">记录与撤销 ( log &amp; reset)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-number">3.</span> <span class="toc-text">Reference</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&text=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&title=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&is_video=false&description=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Notes-访问Git加速&amp;常见的Git命令&body=Check out this article: http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&title=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&title=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&title=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&title=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&name=Notes-访问Git加速&amp;常见的Git命令&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/02/08/%E8%AE%BF%E9%97%AEGit-%E5%8A%A0%E9%80%9F-%E5%B8%B8%E8%A7%81%E7%9A%84Git%E5%91%BD%E4%BB%A4/&t=Notes-访问Git加速&amp;常见的Git命令"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2022
+    yangjing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/reading/">Reading</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/recording/">Recording</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'yangjingla/comments';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

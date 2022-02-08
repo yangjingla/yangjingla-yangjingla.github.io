@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Deep Residual Learning for Image RecognitionProblem Deep networks are more difficult to train [vanishing&#x2F;exploding gradients  problem], rethinking deep representation is really important ?   degradati">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paper-ResNet">
+<meta property="og:url" content="http://example.com/2021/02/27/Paper-%20ResNet/index.html">
+<meta property="og:site_name" content="Yang Jing">
+<meta property="og:description" content="Deep Residual Learning for Image RecognitionProblem Deep networks are more difficult to train [vanishing&#x2F;exploding gradients  problem], rethinking deep representation is really important ?   degradati">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnvigrveo8j30rs0dw413.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnw3sk1ctsj30t80ecq4t.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1go072vh99kj30pu0dhn0e.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1go0pk1ej9uj31aq0segub.jpg">
+<meta property="article:published_time" content="2021-02-27T11:09:43.000Z">
+<meta property="article:modified_time" content="2022-02-08T11:55:49.776Z">
+<meta property="article:author" content="yangjing">
+<meta property="article:tag" content="Paper">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnvigrveo8j30rs0dw413.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.jpg">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.jpg" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg">
+        
+      
+    
+    <!-- title -->
+    <title>Paper-ResNet</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Yang Jing" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/reading/">Reading</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/recording/">Recording</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2021/03/21/Paper-GraphEmbedding/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2020/12/07/Notes-CCKS2020%E8%AF%84%E6%B5%8B%E6%80%BB%E7%BB%93/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2021/02/27/Paper-%20ResNet/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2021/02/27/Paper-%20ResNet/&text=Paper-ResNet"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2021/02/27/Paper-%20ResNet/&title=Paper-ResNet"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2021/02/27/Paper-%20ResNet/&is_video=false&description=Paper-ResNet"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Paper-ResNet&body=Check out this article: http://example.com/2021/02/27/Paper-%20ResNet/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2021/02/27/Paper-%20ResNet/&title=Paper-ResNet"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2021/02/27/Paper-%20ResNet/&title=Paper-ResNet"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2021/02/27/Paper-%20ResNet/&title=Paper-ResNet"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2021/02/27/Paper-%20ResNet/&title=Paper-ResNet"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2021/02/27/Paper-%20ResNet/&name=Paper-ResNet&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2021/02/27/Paper-%20ResNet/&t=Paper-ResNet"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Deep-Residual-Learning-for-Image-Recognition"><span class="toc-number">1.</span> <span class="toc-text">Deep Residual Learning for Image Recognition</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem"><span class="toc-number">1.0.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Motivation"><span class="toc-number">1.0.2.</span> <span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Methods"><span class="toc-number">1.0.3.</span> <span class="toc-text">Methods</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Question-amp-Conclusion"><span class="toc-number">1.0.4.</span> <span class="toc-text">Question &amp; Conclusion</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AN-IMAGE-IS-WORTH-16X16-WORDS-TRANSFORMERS-FOR-IMAGE-RECOGNITION-AT-SCALE"><span class="toc-number">2.</span> <span class="toc-text">AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem-1"><span class="toc-number">2.0.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Motivation-1"><span class="toc-number">2.0.2.</span> <span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Method"><span class="toc-number">2.0.3.</span> <span class="toc-text">Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Question-amp-Conclusion-1"><span class="toc-number">2.0.4.</span> <span class="toc-text">Question &amp; Conclusion</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Paper-ResNet
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">yangjing</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-02-27T11:09:43.000Z" itemprop="datePublished">2021-02-27</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Paper/" rel="tag">Paper</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="Deep-Residual-Learning-for-Image-Recognition"><a href="#Deep-Residual-Learning-for-Image-Recognition" class="headerlink" title="Deep Residual Learning for Image Recognition"></a>Deep Residual Learning for Image Recognition</h1><h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><ul>
+<li><p>Deep networks are more difficult to train [vanishing/exploding gradients  problem], rethinking deep representation is really important ? </p>
+</li>
+<li><p>degradation problem definition</p>
+<ul>
+<li>With the network depth increasing, accuracy gets saturated (which might be unsurprising) and then degrades rapidly. Unexpectedly,degradation is not caused by overfitting.</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnvigrveo8j30rs0dw413.jpg" alt="Screen Shot 2021-02-21 at 10.11.31 PM"></p>
+<ul>
+<li>The degradation problem suggests <strong>that the solvers might have difficulties in approximating identity mappings by multiple nonlinear layers</strong>. </li>
+</ul>
+<p>So in this paper,the most contribution is  **deep residual learning framework. ** ,which are easier to optimize, and can gain accuracy from considerably increased depth.With the residual learning reformulation, if <strong>identity mappings</strong> are optimal, the solvers may simply drive the weights of the multiple nonlinear layers toward zero to approach identity mappings.</p>
+<h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h3><ul>
+<li>residual representation<ul>
+<li> <strong>VLDA and Fisher Vector</strong> Both of them are powerful shallow representations for image re- trieval and classification .**VLAD <strong>is a representation that encodes by the residual vectors with respect to a dictionary ；</strong>Fisher Vector ** can be formulated as a probabilistic version [18] of VLAD.</li>
+<li> <strong>Vector Quantization</strong>, encoding residual vectors [17] is shown to be more effec- tive than encoding original vectors.</li>
+<li> In PDE, <strong>Multigrid Method</strong> reformulates the system as subprob- lems at multiple scales, where each subproblem is respon- sible for the residual solution between a coarser and a finer scale. </li>
+</ul>
+</li>
+</ul>
+<p><strong>These methods suggest that a good reformulation or preconditioning can simplify the optimization.</strong></p>
+<ul>
+<li>Shortcut connections:<ul>
+<li>In fact ,residual connection is not  totally a novel idea.An early practice of training <strong>MLP</strong> is to add a linear layer connected from the network input to the output; **Inception Network,**layer is com- posed of a shortcut branch and a few deeper branches. ; <strong>Highway Network</strong> present shortcut connections with gating functions  ; </li>
+</ul>
+</li>
+</ul>
+<p> <strong>Identity shortcuts that are parameter-free,and never closed. all information is always passed through, with additional residual functions to be learned.</strong></p>
+<h3 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h3><ul>
+<li>Identify mapping vs projection mapping <ul>
+<li>for equation $y = f(x,w_i) + x $ ，which the demensionsof $f(x,w_i)$ and $x$ is same/identic.</li>
+<li>for equation $y = f(x,w_i) +w_sx$ ,which $w_s$ only to match the demension consistency,in the paper investigate three projection shortcut:zero padding ; all shortcut projection;only incresing demensions</li>
+</ul>
+</li>
+</ul>
+<p><strong>In fact ,table3 (in the paper)  indicate that projection shortcuts are not essential for addressing the degradation problem.</strong> </p>
+<ul>
+<li>Deeper Bottleneck Architectures<ul>
+<li>Resnet 18/34/50/101/152 vs VGG16/19 ,</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnw3sk1ctsj30t80ecq4t.jpg" alt="Screen Shot 2021-02-22 at 10.29.27 AM"></p>
+<ul>
+<li><strong>Emsemble</strong> different  form an ensemble (only with two 152-layer ones at the time of submitting). This leads to 3.57% top-5 error on the test set (Table 5). This entry won the 1st place in ILSVRC 2015.<br>4.2.</li>
+<li><strong>Experiment Analysis</strong> is highlight .</li>
+</ul>
+<h3 id="Question-amp-Conclusion"><a href="#Question-amp-Conclusion" class="headerlink" title="Question &amp; Conclusion"></a>Question &amp; Conclusion</h3><ul>
+<li><p>Deeper/Wider network  really work ? rethinking the criticism of gpt-3 and deep learning ? </p>
+</li>
+<li><p>Why “use bactch normalization without dropout” ? </p>
+</li>
+<li><p>How to judge vanishing graident problem or degrading problem ? how did batch normlaization help alleviate vanishing gradient problem ? </p>
+</li>
+<li><p>How to wirte Experiment Analysis to support model and Idea? </p>
+</li>
+</ul>
+<hr>
+<ul>
+<li><p>**deep residual learning framework. ** ,which are easier to optimize, and can gain accuracy from considerably increased depth.</p>
+</li>
+<li><p>Residual Learning without extra parameters and can still trained  end-to-end by SGD .</p>
+</li>
+<li><p>🍅 for competion , not only in machine learning but in deep learninng  emsembeling method is  alse useful  and surprised .  </p>
+</li>
+</ul>
+<h1 id="AN-IMAGE-IS-WORTH-16X16-WORDS-TRANSFORMERS-FOR-IMAGE-RECOGNITION-AT-SCALE"><a href="#AN-IMAGE-IS-WORTH-16X16-WORDS-TRANSFORMERS-FOR-IMAGE-RECOGNITION-AT-SCALE" class="headerlink" title="AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE"></a>AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE</h1><h3 id="Problem-1"><a href="#Problem-1" class="headerlink" title="Problem"></a>Problem</h3><p>Transfomrer has already become a deco-facto standard in NLP, it’s application in cv is limited. </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self-attention , Transformers’  computational efficiency and scalability,</span><br></pre></td></tr></table></figure>
+
+<p><strong>Pure transformer[[not combined with CNNs]</strong>  applied directly to sequences of image patches can perform very well on image classification tasks ? </p>
+<p>Existing approches and  Challenges</p>
+<ul>
+<li>self-attention to images would require that each pixel attends to every other pixel. With quadratic cost in the number of pixels, this does not scale to realistic input sizes</li>
+<li>combining convolutional neural networks (CNNs) with forms of self-attention</li>
+</ul>
+<h3 id="Motivation-1"><a href="#Motivation-1" class="headerlink" title="Motivation"></a>Motivation</h3><h3 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h3><ul>
+<li>PipeLine<ul>
+<li>Step1:split an image into fixed-size patches, linearly embed each of them, add position embeddings<ul>
+<li><strong>reshape image 3d -&gt;2d:</strong>  $x\in R^{H \times W \times C} -&gt;  R^{(HW/p^2) \times (p^2C)}$ which $N = \frac{HW}{p^2}$ is the number of the patches</li>
+<li><strong>Learnable Position Eembeddin</strong>g : 2d position vs 3d position ? </li>
+</ul>
+</li>
+<li>Step2: feed the resulting sequence of vectors to a standard Transformer encoder</li>
+<li>Finally : adding an extra learnable “classification token” to the sequence.</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1go072vh99kj30pu0dhn0e.jpg" alt="figure1"></p>
+<ul>
+<li>Pretrained in large Datasets<ul>
+<li>ImageNet, ImageNet-21k, CIFAR100,JFT- 300M</li>
+</ul>
+</li>
+<li>Results<ul>
+<li>Fine-Tuning: optimize three regularization parameters – <strong>weight decay, dropout, and label smoothing</strong></li>
+<li><strong>Replace Batch Normalization Layers  in ResNet with Group Normalization will  imporve ResNet performance.</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1go0pk1ej9uj31aq0segub.jpg" alt="Screen Shot 2021-02-26 at 9.53.23 AM"></p>
+<h3 id="Question-amp-Conclusion-1"><a href="#Question-amp-Conclusion-1" class="headerlink" title="Question &amp; Conclusion"></a>Question &amp; Conclusion</h3><ul>
+<li><p>First Transformers with <strong>global self-attention to full-sized images</strong></p>
+</li>
+<li><p>ViT approaches or beats state of the art on multiple image recognition benchmarks. In particular, the best model reaches th<strong>e accuracy of 88.55% on ImageNet, 90.72% on ImageNet-ReaL, 94.55% on CIFAR-100, and 77.63% on the VTAB suite of 19 tasks</strong>.</p>
+</li>
+<li><p>Self-supervision pretrained methods?</p>
+<ul>
+<li><strong>masked pactch prediction  [such as ]?</strong> </li>
+<li><strong>how to design pretrained task to  train Vit [such as Masked Language Model &amp; Next setence prediction] ?</strong> </li>
+<li><strong>how to apply VIT to other vision task ,such as objection, segementation , video processing?</strong></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/reading/">Reading</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/recording/">Recording</a></li>
+         
+          <li><a href="/links/">Links</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Deep-Residual-Learning-for-Image-Recognition"><span class="toc-number">1.</span> <span class="toc-text">Deep Residual Learning for Image Recognition</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem"><span class="toc-number">1.0.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Motivation"><span class="toc-number">1.0.2.</span> <span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Methods"><span class="toc-number">1.0.3.</span> <span class="toc-text">Methods</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Question-amp-Conclusion"><span class="toc-number">1.0.4.</span> <span class="toc-text">Question &amp; Conclusion</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AN-IMAGE-IS-WORTH-16X16-WORDS-TRANSFORMERS-FOR-IMAGE-RECOGNITION-AT-SCALE"><span class="toc-number">2.</span> <span class="toc-text">AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem-1"><span class="toc-number">2.0.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Motivation-1"><span class="toc-number">2.0.2.</span> <span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Method"><span class="toc-number">2.0.3.</span> <span class="toc-text">Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Question-amp-Conclusion-1"><span class="toc-number">2.0.4.</span> <span class="toc-text">Question &amp; Conclusion</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2021/02/27/Paper-%20ResNet/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2021/02/27/Paper-%20ResNet/&text=Paper-ResNet"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2021/02/27/Paper-%20ResNet/&title=Paper-ResNet"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2021/02/27/Paper-%20ResNet/&is_video=false&description=Paper-ResNet"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Paper-ResNet&body=Check out this article: http://example.com/2021/02/27/Paper-%20ResNet/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2021/02/27/Paper-%20ResNet/&title=Paper-ResNet"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2021/02/27/Paper-%20ResNet/&title=Paper-ResNet"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2021/02/27/Paper-%20ResNet/&title=Paper-ResNet"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2021/02/27/Paper-%20ResNet/&title=Paper-ResNet"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2021/02/27/Paper-%20ResNet/&name=Paper-ResNet&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2021/02/27/Paper-%20ResNet/&t=Paper-ResNet"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2022
+    yangjing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/reading/">Reading</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/recording/">Recording</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'yangjingla/comments';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

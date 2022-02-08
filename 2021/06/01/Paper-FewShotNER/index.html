@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Few-Shot Named Entity Recognition: A Comprehensive StudyProblemBuilding NER System is labor-intensive, time-consuming task, prohibitively expensive  and requires rich domain Knowledge and expert exper">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paper-FewShotNER">
+<meta property="og:url" content="http://example.com/2021/06/01/Paper-FewShotNER/index.html">
+<meta property="og:site_name" content="Yang Jing">
+<meta property="og:description" content="Few-Shot Named Entity Recognition: A Comprehensive StudyProblemBuilding NER System is labor-intensive, time-consuming task, prohibitively expensive  and requires rich domain Knowledge and expert exper">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gpdqosv4sxj31bd0u07cq.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gpay36kszmj30oo0n6n1c.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gpb1z4v60sj30oo0z4agy.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gr2ssma8kyj31sq0o47a7.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gr2kheq143j31id0u0drf.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gr2sgsrmyij31aq0smaib.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gr2luggcvgj316g0tik0r.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gr2sd1efnbj316g0gwtby.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1grlcrt5ygxj30ly0rojvx.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1grld6a9dqjj315w0suq8x.jpg">
+<meta property="article:published_time" content="2021-06-01T08:49:03.000Z">
+<meta property="article:modified_time" content="2022-02-08T11:55:42.140Z">
+<meta property="article:author" content="yangjing">
+<meta property="article:tag" content="Paper">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gpdqosv4sxj31bd0u07cq.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.jpg">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.jpg" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg">
+        
+      
+    
+    <!-- title -->
+    <title>Paper-FewShotNER</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Yang Jing" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/reading/">Reading</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/recording/">Recording</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2022/01/02/hello-world/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2021/05/10/Notes-EnsembleLearning/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2021/06/01/Paper-FewShotNER/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2021/06/01/Paper-FewShotNER/&text=Paper-FewShotNER"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2021/06/01/Paper-FewShotNER/&title=Paper-FewShotNER"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2021/06/01/Paper-FewShotNER/&is_video=false&description=Paper-FewShotNER"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Paper-FewShotNER&body=Check out this article: http://example.com/2021/06/01/Paper-FewShotNER/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2021/06/01/Paper-FewShotNER/&title=Paper-FewShotNER"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2021/06/01/Paper-FewShotNER/&title=Paper-FewShotNER"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2021/06/01/Paper-FewShotNER/&title=Paper-FewShotNER"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2021/06/01/Paper-FewShotNER/&title=Paper-FewShotNER"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2021/06/01/Paper-FewShotNER/&name=Paper-FewShotNER&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2021/06/01/Paper-FewShotNER/&t=Paper-FewShotNER"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Few-Shot-Named-Entity-Recognition-A-Comprehensive-Study"><span class="toc-number">1.</span> <span class="toc-text">Few-Shot Named Entity Recognition: A Comprehensive Study</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem"><span class="toc-number">1.0.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Motivation"><span class="toc-number">1.0.2.</span> <span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Method"><span class="toc-number">1.0.3.</span> <span class="toc-text">Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Future-amp-Conclusion"><span class="toc-number">1.0.4.</span> <span class="toc-text">Future&amp;Conclusion</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Distantly-Supervised-Named-Entity-Recognition-using-Positive-Unlabeled-Learning-ACL2019"><span class="toc-number">2.</span> <span class="toc-text">Distantly Supervised Named Entity Recognition using Positive-Unlabeled Learning[ACL2019]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem-1"><span class="toc-number">2.0.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Moitvation"><span class="toc-number">2.0.2.</span> <span class="toc-text">Moitvation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Method-1"><span class="toc-number">2.0.3.</span> <span class="toc-text">Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conclusion-amp-Future"><span class="toc-number">2.0.4.</span> <span class="toc-text">Conclusion &amp; Future</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Improving-Low-Resource-Named-Entity-Recognition-using-Joint-sentence-and-Token-Labeling-ACL2020"><span class="toc-number">3.</span> <span class="toc-text">Improving Low-Resource Named Entity Recognition using Joint sentence and Token Labeling[ACL2020]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem-2"><span class="toc-number">3.0.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Motivation-1"><span class="toc-number">3.0.2.</span> <span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Model"><span class="toc-number">3.0.3.</span> <span class="toc-text">Model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conclusion-amp-Question"><span class="toc-number">3.0.4.</span> <span class="toc-text">Conclusion &amp; Question</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TriggerNER-Learning-with-Entity-Triggers-as-Explanations-for-Named-Entity-Recognition-ACL2020"><span class="toc-number">4.</span> <span class="toc-text">TriggerNER: Learning with Entity Triggers as Explanations for Named Entity Recognition[ACL2020]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem-3"><span class="toc-number">4.0.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Motivation-2"><span class="toc-number">4.0.2.</span> <span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Model-1"><span class="toc-number">4.0.3.</span> <span class="toc-text">Model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conclusion"><span class="toc-number">4.0.4.</span> <span class="toc-text">Conclusion</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#A-Unified-Generative-Framework-for-Various-NER-Subtasks-arxiv"><span class="toc-number">5.</span> <span class="toc-text">A Unified Generative Framework for Various NER Subtasks[arxiv]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem-4"><span class="toc-number">5.0.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Method-BART-PointNet"><span class="toc-number">5.0.2.</span> <span class="toc-text">Method(BART+ PointNet)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conclusion-1"><span class="toc-number">5.0.3.</span> <span class="toc-text">Conclusion</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Paper-FewShotNER
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">yangjing</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-06-01T08:49:03.000Z" itemprop="datePublished">2021-06-01</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Paper/" rel="tag">Paper</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="Few-Shot-Named-Entity-Recognition-A-Comprehensive-Study"><a href="#Few-Shot-Named-Entity-Recognition-A-Comprehensive-Study" class="headerlink" title="Few-Shot Named Entity Recognition: A Comprehensive Study"></a>Few-Shot Named Entity Recognition: A Comprehensive Study</h1><h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><p>Building NER System is labor-intensive, time-consuming task, prohibitively expensive  and requires rich domain Knowledge and expert experience。</p>
+<h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h3><p><strong>Tranditonal NER vs Few-shot NER?</strong></p>
+<ul>
+<li>Tranditional NER are trained in the standard supervised leanring paradigrms, In the real world application, the more favorable scenarios are given for each entity type.which yield task**: few-shot NER.**</li>
+<li>Small number of labeled tokens are available, it renders difficulties for supervised fine-tuning approach.</li>
+</ul>
+<p><strong>Metrics for few-shot NER ?</strong></p>
+<p>$$L(x,y) = \sum_{(X,Y) \in D^L} \sum_{i=1}^{T} KL(y_i || q(y_i | x_i))$$</p>
+<p>Where KL divergence between two distribution and prediction probability:</p>
+<p>$$ KL(p||q) = E_{p}log(p|q) = Softmax(W*f(x) + b )$$</p>
+<p><strong>Related Task and Methods</strong></p>
+<ul>
+<li>Prototype-based methods:</li>
+<li>supervised pre-training:</li>
+<li>Self-training: teacher-student architecture, Distillation technology in NLP</li>
+</ul>
+<h3 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h3><p>Three orthogonal directions (also complementary) show in Figure:</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gpdqosv4sxj31bd0u07cq.jpg" alt="https://tva1.sinaimg.cn/large/008eGmZEgy1gpdqosv4sxj31bd0u07cq.jpg"></p>
+<p><strong>Prototype-based method</strong></p>
+<ul>
+<li><p>How to adapt meta- learning such as prototype-based methods (prototype network) for few- shot NER?</p>
+</li>
+<li><p>Core idea is use episodic classification paradigm to simulate few-shor settings during model training.</p>
+</li>
+</ul>
+<p><strong>Noisy supervised pre-training</strong></p>
+<ul>
+<li><p>How to leverage freely-available web data as noisy supervised pre-training data?</p>
+</li>
+<li><p>motivated by mask-pretraining-model’s performance, but PLMs treats each token equally which is not aligned with the goal of NER.and the intuition inspires us to endow the backbone network an ability to outweight the representations of entity for NER.</p>
+</li>
+</ul>
+<p><strong>Self-Training</strong></p>
+<ul>
+<li><p>How to leverage unlabeled in-domain sentences in a semi-supervised manner?</p>
+</li>
+<li><p>Train two model : teacher model <em>θ</em> and student model  $\theta$</p>
+</li>
+</ul>
+<p><strong>Utilize a nearest enighbor classifier based on the contextualized representation</strong></p>
+<p>Training Free NER</p>
+<ul>
+<li>Neighbor-tagging:</li>
+<li>Examplebased NER:</li>
+</ul>
+<h3 id="Future-amp-Conclusion"><a href="#Future-amp-Conclusion" class="headerlink" title="Future&amp;Conclusion"></a>Future&amp;Conclusion</h3><ul>
+<li>Prototype-based methods, Noisy Supervised Pretraining, Self-Training</li>
+<li>❓How to combine Span-based and BIO-based ?</li>
+<li>❓public code and benchmarks for few-shot learning ?</li>
+</ul>
+<h1 id="Distantly-Supervised-Named-Entity-Recognition-using-Positive-Unlabeled-Learning-ACL2019"><a href="#Distantly-Supervised-Named-Entity-Recognition-using-Positive-Unlabeled-Learning-ACL2019" class="headerlink" title="Distantly Supervised Named Entity Recognition using Positive-Unlabeled Learning[ACL2019]"></a>Distantly Supervised Named Entity Recognition using Positive-Unlabeled Learning[ACL2019]</h1><h3 id="Problem-1"><a href="#Problem-1" class="headerlink" title="Problem"></a>Problem</h3><ul>
+<li>传统的基于序列标注方法的命名实体识别，是典型的监督学习方法，过度的依赖于数据和数据和质量，然而对于一些特殊行业（例如：生物/医学)领域无法获得大规模的高质量数据的场景之下，现有的一些模型不能够表现很好的的性能。</li>
+<li>构造一个能够覆盖所有的实体的字典是不可能的，如何利用文本之中匹配到的实体和未匹配到的实体呢？</li>
+</ul>
+<h3 id="Moitvation"><a href="#Moitvation" class="headerlink" title="Moitvation"></a>Moitvation</h3><ul>
+<li>Positive-unlabeled(PU) learning problem:<ul>
+<li>perform the NER task using only unlabeled data and named entity dictionaries.</li>
+<li>Postive data(字典匹配到的实体) 和 Unlabeled data( 未匹配到的实体)</li>
+<li>如果我们只用字典和没有标注的数据，能否同样进行命名体识别呢？</li>
+</ul>
+</li>
+</ul>
+<h3 id="Method-1"><a href="#Method-1" class="headerlink" title="Method"></a>Method</h3><ul>
+<li><p>Unbiased Positive-Unlabeled learning</p>
+<ul>
+<li> when there are only a set of positive (P) examples and a set of unlabeled (U) examples, which contains both positive and negative examples.</li>
+</ul>
+<p>$$R_l = n E_{x,y=0} l(f(x_i), 0) + p E_{x,y=1} l(f(x),1)$$</p>
+<ul>
+<li>其中记 <em>π</em> = <em>p</em>(<em>y</em> = 1) 为正样本 ，其实本式的关键在于如何估计第一项unlabled data  </li>
+</ul>
+<p>$$R_l = n E_{x,y=0}l(f(x_i), 0) = E_{x} l(f(x),0) - p E_{x,y=1} l(f(x), 0)$$ 。</p>
+</li>
+</ul>
+<ul>
+<li><p>其中 $n_u$ 和  分别是正样本和负样本的总数</p>
+<p>$$ \hat{R}<em>l = \frac{1}{n_u} \sum</em>{i=1}^{n_u} l(f(x), 0) + \frac{\pi_p}{n_p} \sum_{i=1}^{n_p}( l(f(x_i^{p},1) - l(f(x_i^p), 0)) $$</p>
+</li>
+<li><p>Consistent Positive-Unlabeled Learning</p>
+<ul>
+<li>什么是一致性？有什么作用？[能够一定程度上缓解过拟合问题吗？]</li>
+<li>文章在2.3节和附录之中介绍证明了一个结论：只要在上式之中的loss函数是一个存在上界的函数，那么$\hat{R_l}$就是一致的consistent.</li>
+</ul>
+</li>
+<li><p>使用negative/positive 两个标签进行标注，而不是传统的BIO/BIOES进行标注 ，利用字典和最大前向匹配策略进行匹配</p>
+</li>
+<li><p>Label Assignment, Data Labeling using the Dictionary, PU Learning Classifier,Loss definiton,Label Inference and Adapted PU Learning.</p>
+<ul>
+<li>Lebel Inference: 为每一个实体的类型建立了多个分类器，因此会存在一个实体被多个分类器同时预测为正类，此时我们只需要选择概率$f(w|s)$最高的则可.</li>
+<li>AdaSampling：因为正样本要满足$p(X|Y=1)独立同分布 ，这个条件通常无法满足， 关键是和能够渐渐的来丰富我们词典的内容(其实就是伪标签的思想，但是如何获得可靠真实的伪标签呢？)</li>
+</ul>
+</li>
+</ul>
+<h3 id="Conclusion-amp-Future"><a href="#Conclusion-amp-Future" class="headerlink" title="Conclusion &amp; Future"></a>Conclusion &amp; Future</h3><ul>
+<li>结合词典的一种明明实体识别PU Learning 学习算法，能够缓解没有足够的标注数据的问题，甚至zero-shot ？</li>
+<li>能够证明的PU learning 学习算法应该是一致的和无偏见（consitent and unbiased）, 有助于减少我们的字典的规模。</li>
+<li>能否引入一些更加大的词典的同时，提高查询的速度？比如引入wiki百科等等规模十分大的知识库？</li>
+</ul>
+<h1 id="Improving-Low-Resource-Named-Entity-Recognition-using-Joint-sentence-and-Token-Labeling-ACL2020"><a href="#Improving-Low-Resource-Named-Entity-Recognition-using-Joint-sentence-and-Token-Labeling-ACL2020" class="headerlink" title="Improving Low-Resource Named Entity Recognition using Joint sentence and Token Labeling[ACL2020]"></a>Improving Low-Resource Named Entity Recognition using Joint sentence and Token Labeling[ACL2020]</h1><blockquote>
+<p>We present a joint model that supports multi-class classification and introduce a simple variant of self-attention that allows the model to learn scaling factors. Our model produces 3.78%, 4.20%, 2.08% improvements in F1 over the BiLSTM-CRF baseline on ecommerce product titles in three different low-resource languages: Vietnamese, Thai, and Indonesian, respectively</p>
+</blockquote>
+<h3 id="Problem-2"><a href="#Problem-2" class="headerlink" title="Problem"></a>Problem</h3><ul>
+<li>Sentences-level labels is one of plausible methods to impove low-resource NER</li>
+<li>Sentences-level labels vs token-level ?[Sentences-level label is easy to get and token-level is costly to annotate]</li>
+</ul>
+<h3 id="Motivation-1"><a href="#Motivation-1" class="headerlink" title="Motivation"></a>Motivation</h3><ul>
+<li>for low resource NER -&gt;to get sufficient large number of labeled data<ul>
+<li>multi-task learning, pre-training</li>
+<li>Coarse grained NER, fine-tuning bilingual word embedding, intergrating POS tagging,</li>
+</ul>
+</li>
+<li>previous study have exploited token-level information from auxiliary tasks,few of them have tried to use sentence-level information</li>
+<li>jointly labeling framework</li>
+</ul>
+<h3 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h3><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gpay36kszmj30oo0n6n1c.jpg" alt="https://tva1.sinaimg.cn/large/008eGmZEgy1gpay36kszmj30oo0n6n1c.jpg"></p>
+<ul>
+<li><p>Two tasks</p>
+<ul>
+<li>Task-specific layers include a <strong>CRF for NER</strong> and a linear layer for <strong>sentence classification</strong></li>
+<li>the diffierence between multi tasks learning is the goal which is to imporve the performance of the main task NER</li>
+<li>Joint labeling objective: $ L_{joint} = L_{NER} + L_{C}$</li>
+</ul>
+</li>
+<li><p><strong>soft-attention mechanism</strong></p>
+<ul>
+<li>H*′ = <em>H</em> + <em>H</em> ⊗ <em>a</em></li>
+</ul>
+<p>​    $$atten(Q,K,V) = softmax(\frac{QK^{T}}{\sigma})V \ \sigma = min(relu(w_4 H^{T} +b_4), \sqrt {d_n/n}) +1 $$                </p>
+</li>
+<li><p>Datasets</p>
+</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gpb1z4v60sj30oo0z4agy.jpg" alt="https://tva1.sinaimg.cn/large/008eGmZEgy1gpb1z4v60sj30oo0z4agy.jpg"></p>
+<h3 id="Conclusion-amp-Question"><a href="#Conclusion-amp-Question" class="headerlink" title="Conclusion &amp; Question"></a>Conclusion &amp; Question</h3><ul>
+<li>joint sentence and token labeling model is remarkably effective for low-resource NER</li>
+<li>when the sentence and token label is weakly related, model can support multi-class classifications ?</li>
+<li>multi-task learning and jointly label learning ?soft-attention vs hard attention ?</li>
+<li>在实体和关系的联合抽取的实验之中，如果我的重点是仅仅是关系或者实体，我不需要兼顾我需要怎么去做？</li>
+<li>如何在关系，实体，指代等等多任务的场景之下来加入一些诸如分类任务？</li>
+<li>针对科技文献的信息的抽取，是否只需要根据学科的类别[clue上有相关的数据集]来当作sentence labeling? [本文的实体的来源全部都是在标题之中进行标注的吗？]</li>
+</ul>
+<h1 id="TriggerNER-Learning-with-Entity-Triggers-as-Explanations-for-Named-Entity-Recognition-ACL2020"><a href="#TriggerNER-Learning-with-Entity-Triggers-as-Explanations-for-Named-Entity-Recognition-ACL2020" class="headerlink" title="TriggerNER: Learning with Entity Triggers as Explanations for Named Entity Recognition[ACL2020]"></a>TriggerNER: Learning with Entity Triggers as Explanations for Named Entity Recognition[ACL2020]</h1><blockquote>
+<p>In this paper, we introduce “entity triggers,” an effec- tive proxy of human explanations for facili- tating label-efficient learning of NER models. An entity trigger is defined as a group ofwords in a sentence that helps to explain why humans would recognize an entity in the sentence. </p>
+</blockquote>
+<h3 id="Problem-3"><a href="#Problem-3" class="headerlink" title="Problem"></a>Problem</h3><ul>
+<li>低资源场景下的实体抽取，如何进行半监督学习-&gt;自监督学习-&gt;无监督学习的任务？</li>
+<li>**How to cost-effectively learn a model for NER using entity triggers ? **</li>
+</ul>
+<h3 id="Motivation-2"><a href="#Motivation-2" class="headerlink" title="Motivation"></a>Motivation</h3><p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gr2ssma8kyj31sq0o47a7.jpg" alt="Screen Shot 2021-06-01 at 10.25.23 AM"></p>
+<ul>
+<li>在句子之中有些是带有一些常识性的知识，比如 【国防科大位于四方坪】这个句子中，我们根据【位于】能够推断后面的实体【四方坪】是地名Location.所以【位于】就是我们所提到的 【Entity triggers】。</li>
+<li>还是在模型引入更多的先验知识，为模型引入规则匹配的信息，类似于语句模版。</li>
+<li>We propose a novel framework named Trigger Matching Net- work that learns trigger representations indicative of entity types during the training phase, and iden- tifies triggers in an unlabeled sentence at infer- ence time to guide a traditional entity tagger for delivering better overall NER performance.</li>
+<li>Our intuition is that triggers acting as cues for the same named-entity type should have similar trigger representations, and thus triggers can be identified in an unlabeled sentence at inference time by soft-matching between the sentence representation and trigger representations seen during training. We perform such soft- matching between the sentence representation and trigger representa- tions seen during training. We perform such soft- matching using a self-attention mechanism.</li>
+</ul>
+<h3 id="Model-1"><a href="#Model-1" class="headerlink" title="Model"></a>Model</h3><p>　<strong>Training Stage</strong></p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gr2kheq143j31id0u0drf.jpg" alt="Screen Shot 2021-06-01 at 10.38.32 AM"></p>
+<p><strong>Trigger Encoding &amp; Semantic Matching</strong></p>
+<ul>
+<li><p> Jointly train the trigger encoder <strong>(TrigEncoder)</strong> and the attention-based trigger matching module (<strong>TrigMatcher)</strong> using a shared embedding space.</p>
+</li>
+<li><p>Learning to match triggers and sentences based on attention-based representations, we use <strong>contrastive loss</strong>.</p>
+<p>​    $$ L_{SM} = 1_{matched} \frac{1}{2} ||g_s - g_t||^2 + (1- 1_{matched} \frac{1}{2}(max(0, m-d)))$$</p>
+</li>
+</ul>
+<p><strong>Inference</strong></p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gr2sgsrmyij31aq0smaib.jpg" alt="Screen Shot 2021-06-01 at 3.17.34 PM"></p>
+<p><strong>Inference on Unlabeled Sentences</strong></p>
+<ul>
+<li> TrigMatcher + Trigger dictionary!</li>
+<li>对于已经训练好的trigger vector构建一个字典，在未标注的语料上面利用TrigMatcher 进行匹配，最后通过一个Contrasive Loss 进行学习。</li>
+</ul>
+<p><strong>Experiments</strong></p>
+<p>验证少样本的数据实验设计：</p>
+<ul>
+<li>仅使用20%的数据则可以达到80%的效果（20%的数据是否经过精挑细选还是随机选择呢？）</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gr2luggcvgj316g0tik0r.jpg" alt="Screen Shot 2021-06-01 at 11.28.30 AM"></p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gr2sd1efnbj316g0gwtby.jpg" alt="Screen Shot 2021-06-01 at 3.13.55 PM"></p>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><ul>
+<li> 本文【Related Work】对于少样本/低资源下的NER 做了一些梳理大概包括三个方面：1.lattice 2.distantly supervision  3.active learning 4. linking rules</li>
+<li>能不能够根据这篇TriggerNER的思想+MRC  之中自动的构建高质量的 Query来提高模型的性能？–&gt; 在传统和典型的MRC任务或者是数据集里面的 query是如何产生的呢？</li>
+<li>本文之中的trigger 是在[conll2003,bc5cdr]两个数据集人为的标注出来，类似于不也是将字典更换成了一个trigger，如何在事件抽取之中一样的触发词自动发现( 开放域事件/信息抽取)？</li>
+<li>由于论文写作语言的独特性，科技文献之中所谓的 trigger是不是更加的简单呢？能不能当作低资源场景下的科技文献的信息抽取？</li>
+<li>🍅【active learning 】for data annotation ？</li>
+</ul>
+<h1 id="A-Unified-Generative-Framework-for-Various-NER-Subtasks-arxiv"><a href="#A-Unified-Generative-Framework-for-Various-NER-Subtasks-arxiv" class="headerlink" title="A Unified Generative Framework for Various NER Subtasks[arxiv]"></a>A Unified Generative Framework for Various NER Subtasks[arxiv]</h1><blockquote>
+<p>To that end, we propose to formulate the NER subtasks as an entity span sequence genera- tion task, which can be solved by a unified sequence-to-sequence (Seq2Seq) framework. Based on our unified framework, we can leverage the pre-trained Seq2Seq model to solve all three kinds of NER subtasks without the special design of the tagging schema or ways to enumerate spans</p>
+</blockquote>
+<h3 id="Problem-4"><a href="#Problem-4" class="headerlink" title="Problem"></a>Problem</h3><ul>
+<li>NER has been a fundamental task of Natural Language Processing, and three kinds of NER subtasks have been recongnized in previous work.</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1grlcrt5ygxj30ly0rojvx.jpg" alt="Screen Shot 2021-06-17 at 4.40.11 PM"></p>
+<h3 id="Method-BART-PointNet"><a href="#Method-BART-PointNet" class="headerlink" title="Method(BART+ PointNet)"></a>Method(BART+ PointNet)</h3><p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1grld6a9dqjj315w0suq8x.jpg" alt="Screen Shot 2021-06-17 at 4.54.10 PM"></p>
+<p>Seq2Seq的生成模型</p>
+<ul>
+<li><p>典型的生成任务：</p>
+</li>
+<li><p>生成能力比较强的模型(适合于阅读理解等等生成任务)：BART ，  T5, Longformer</p>
+</li>
+</ul>
+<p> BART</p>
+<ul>
+<li>BART uses the encoder to input the corrupted sentence and the decoder to recover the original sentence.</li>
+</ul>
+<p>NER Datasets</p>
+<ul>
+<li>Flat NER : CONLL03, OntoNotes </li>
+<li>Nested NER : ACE04,ACE05 (借鉴处理的dygie脚本) ， Genia</li>
+</ul>
+<h3 id="Conclusion-1"><a href="#Conclusion-1" class="headerlink" title="Conclusion"></a>Conclusion</h3><ul>
+<li>命名实体问题可以分为：Flat NER, Nested NER, Discontinous NER</li>
+<li>本篇文章对于NER 的两种存在的典型的问题和两种主流的方法都有很详细的优缺点的比较<ul>
+<li>Sequence tagging: 没有一种好的标注方式能够同时解决上面的三个问题</li>
+<li>Span-based: 通过枚举所有的实体(对于非连续实体复杂度高)也不能够同时解决上述的问题，基于Span的方法在结构化推理和解码的时候都会十分的复杂；Span-based 受到span的长度的参数的设置</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/reading/">Reading</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/recording/">Recording</a></li>
+         
+          <li><a href="/links/">Links</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Few-Shot-Named-Entity-Recognition-A-Comprehensive-Study"><span class="toc-number">1.</span> <span class="toc-text">Few-Shot Named Entity Recognition: A Comprehensive Study</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem"><span class="toc-number">1.0.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Motivation"><span class="toc-number">1.0.2.</span> <span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Method"><span class="toc-number">1.0.3.</span> <span class="toc-text">Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Future-amp-Conclusion"><span class="toc-number">1.0.4.</span> <span class="toc-text">Future&amp;Conclusion</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Distantly-Supervised-Named-Entity-Recognition-using-Positive-Unlabeled-Learning-ACL2019"><span class="toc-number">2.</span> <span class="toc-text">Distantly Supervised Named Entity Recognition using Positive-Unlabeled Learning[ACL2019]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem-1"><span class="toc-number">2.0.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Moitvation"><span class="toc-number">2.0.2.</span> <span class="toc-text">Moitvation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Method-1"><span class="toc-number">2.0.3.</span> <span class="toc-text">Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conclusion-amp-Future"><span class="toc-number">2.0.4.</span> <span class="toc-text">Conclusion &amp; Future</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Improving-Low-Resource-Named-Entity-Recognition-using-Joint-sentence-and-Token-Labeling-ACL2020"><span class="toc-number">3.</span> <span class="toc-text">Improving Low-Resource Named Entity Recognition using Joint sentence and Token Labeling[ACL2020]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem-2"><span class="toc-number">3.0.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Motivation-1"><span class="toc-number">3.0.2.</span> <span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Model"><span class="toc-number">3.0.3.</span> <span class="toc-text">Model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conclusion-amp-Question"><span class="toc-number">3.0.4.</span> <span class="toc-text">Conclusion &amp; Question</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TriggerNER-Learning-with-Entity-Triggers-as-Explanations-for-Named-Entity-Recognition-ACL2020"><span class="toc-number">4.</span> <span class="toc-text">TriggerNER: Learning with Entity Triggers as Explanations for Named Entity Recognition[ACL2020]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem-3"><span class="toc-number">4.0.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Motivation-2"><span class="toc-number">4.0.2.</span> <span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Model-1"><span class="toc-number">4.0.3.</span> <span class="toc-text">Model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conclusion"><span class="toc-number">4.0.4.</span> <span class="toc-text">Conclusion</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#A-Unified-Generative-Framework-for-Various-NER-Subtasks-arxiv"><span class="toc-number">5.</span> <span class="toc-text">A Unified Generative Framework for Various NER Subtasks[arxiv]</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem-4"><span class="toc-number">5.0.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Method-BART-PointNet"><span class="toc-number">5.0.2.</span> <span class="toc-text">Method(BART+ PointNet)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conclusion-1"><span class="toc-number">5.0.3.</span> <span class="toc-text">Conclusion</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2021/06/01/Paper-FewShotNER/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2021/06/01/Paper-FewShotNER/&text=Paper-FewShotNER"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2021/06/01/Paper-FewShotNER/&title=Paper-FewShotNER"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2021/06/01/Paper-FewShotNER/&is_video=false&description=Paper-FewShotNER"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Paper-FewShotNER&body=Check out this article: http://example.com/2021/06/01/Paper-FewShotNER/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2021/06/01/Paper-FewShotNER/&title=Paper-FewShotNER"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2021/06/01/Paper-FewShotNER/&title=Paper-FewShotNER"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2021/06/01/Paper-FewShotNER/&title=Paper-FewShotNER"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2021/06/01/Paper-FewShotNER/&title=Paper-FewShotNER"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2021/06/01/Paper-FewShotNER/&name=Paper-FewShotNER&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2021/06/01/Paper-FewShotNER/&t=Paper-FewShotNER"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2022
+    yangjing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/reading/">Reading</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/recording/">Recording</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'yangjingla/comments';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
