@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="原文链接：https:&#x2F;&#x2F;perceiving-systems.blog&#x2F;en&#x2F;news&#x2F;novelty-in-science译文链接：https:&#x2F;&#x2F;xiuyuliang.cn&#x2F;blogs&#x2F;novelty.html  对于CVPR这样的顶会，一篇投稿到底该不该中，审稿人往往是有很强烈的主观意愿的。 好似心中有一条金线，达到了就是达到了，没达到就是没达到。 这条金线标准蛮高的，最终能顺利过线的工作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么">
+<meta property="og:url" content="http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/index.html">
+<meta property="og:site_name" content="Yang Jing">
+<meta property="og:description" content="原文链接：https:&#x2F;&#x2F;perceiving-systems.blog&#x2F;en&#x2F;news&#x2F;novelty-in-science译文链接：https:&#x2F;&#x2F;xiuyuliang.cn&#x2F;blogs&#x2F;novelty.html  对于CVPR这样的顶会，一篇投稿到底该不该中，审稿人往往是有很强烈的主观意愿的。 好似心中有一条金线，达到了就是达到了，没达到就是没达到。 这条金线标准蛮高的，最终能顺利过线的工作">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://xiuyuliang.cn/blogs/figs/sky.jpeg">
+<meta property="og:image" content="https://xiuyuliang.cn/blogs/figs/painting.png">
+<meta property="article:published_time" content="2022-02-11T12:26:43.000Z">
+<meta property="article:modified_time" content="2022-02-24T12:49:51.008Z">
+<meta property="article:author" content="yangjing">
+<meta property="article:tag" content="Paper">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiuyuliang.cn/blogs/figs/sky.jpeg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.jpg">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.jpg" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg">
+        
+      
+    
+    <!-- title -->
+    <title>Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Yang Jing" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/reading/">Reading</a></li><!--
+     --><!--
+       --><li><a href="/datasets/">Datasets</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/recording/">Recording</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2022/02/18/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E8%90%BD%E5%9C%B0%E5%9C%BA%E6%99%AF%E7%9A%84Trick%EF%BC%88%E4%BA%8C%EF%BC%89/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2022/02/08/Paper-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E6%95%B4%E7%90%86/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&text=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&title=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&is_video=false&description=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么&body=Check out this article: http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&title=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&title=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&title=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&title=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&name=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&t=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%B0%B1%E6%98%AF%E6%96%B0"><span class="toc-number">1.</span> <span class="toc-text">复杂就是新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%BE%E5%B0%B1%E6%98%AF%E6%96%B0"><span class="toc-number">2.</span> <span class="toc-text">难就是新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A6%BB%E8%B0%B1%E5%B0%B1%E6%98%AF%E6%96%B0"><span class="toc-number">3.</span> <span class="toc-text">离谱就是新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E5%90%AB%E9%87%8F%E5%B0%B1%E6%98%AF%E6%96%B0"><span class="toc-number">4.</span> <span class="toc-text">技术含量就是新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E7%94%A8%E5%B0%B1%E6%98%AF%E6%96%B0"><span class="toc-number">5.</span> <span class="toc-text">有用就是新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%82%B9%E4%BA%BA%E7%94%9F%E7%BB%8F%E9%AA%8C"><span class="toc-number">6.</span> <span class="toc-text">一点人生经验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%82%E8%AE%B0"><span class="toc-number">7.</span> <span class="toc-text">杂记</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">yangjing</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-02-11T12:26:43.000Z" itemprop="datePublished">2022-02-11</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Paper/" rel="tag">Paper</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>原文链接：<a target="_blank" rel="noopener" href="https://perceiving-systems.blog/en/news/novelty-in-science">https://perceiving-systems.blog/en/news/novelty-in-science</a><br>译文链接：<a target="_blank" rel="noopener" href="https://xiuyuliang.cn/blogs/novelty.html">https://xiuyuliang.cn/blogs/novelty.html</a></p>
+<hr>
+<p>对于CVPR这样的顶会，一篇投稿到底该不该中，审稿人往往是有很强烈的主观意愿的。 好似心中有一条金线，达到了就是达到了，没达到就是没达到。 这条金线标准蛮高的，最终能顺利过线的工作，真得有两把刷子才行。 那么问题来了，我们该怎么定义这个“真有两把刷子”？可能会有很多审稿人说，“当然是看这个工作够不够创新喽。” 这没毛病，但我想追问下去。你给我翻译翻译，什么是<strong>创新</strong>的科学研究？</p>
+<p><img src="https://xiuyuliang.cn/blogs/figs/sky.jpeg" alt="https://xiuyuliang.cn/blogs/figs/sky.jpeg"></p>
+<p>对于各式各样的审稿人，我是身经百战见的多了。当他们谈“创新”的时候，其实谈的是“复杂”，“难度”，以及“技术含量”。 似乎必须得有这些元素，一篇工作才能算创新。所以呢，我想我们或许可以换个词**<del>“新不新”</del> “妙不妙”** “妙”或者说“美感”这样的表述，可以帮我们摒弃掉那些关于方法复杂性和技术含量的讨论，直达科学创新的本质。 哪怕其创作技法很简单，一幅画依然可以是美的， 学术论文也是一样的道理。伦勃朗丰富的细节和色彩是一种美， 毕加索看似简单的曲线构图，也是另一种美。</p>
+<p><img src="https://xiuyuliang.cn/blogs/figs/painting.png" alt="https://xiuyuliang.cn/blogs/figs/painting.png"></p>
+<p>现在，有了“妙不妙”这个指标，我们可以重新审视一下，那些审稿人对创新性的典型误解:</p>
+<h3 id="复杂就是新"><a href="#复杂就是新" class="headerlink" title="复杂就是新"></a>复杂就是新</h3><p>审稿人常把“简单的思路”和“没有创新性”混为一谈，但事实往往并非如此。有一种常见的审稿意见:</p>
+<blockquote>
+<p>这个思路太简单了，只在目标优化方程的一项上动了动手脚，其他地方和之前的工作一模一样。</p>
+</blockquote>
+<p>如果之前的确没人打过这一项的主意，那么这个改动就是事实上的创新。这个创见的真正价值在于，通过主动的思索找到了这个命门 ——— 一个稍微改动就可以带来明显效果提升的命门。最终基于此，构建出了简约的解决方案。 （译者按：福特斯坦门茨的故事，“画一条线，1美元，知道在哪里画线，9999美元。”）</p>
+<p>这类审稿意见的存在，让我的学生们觉得，他们得把方法弄的复杂一点才能博得审稿人的青睐。但我觉得简约比没必要的繁冗更有价值。 越简单越好。比起咔咔整一个“为了复杂而复杂”的模型，在一个已有模型上略加改动就有所提升，更妙一些。</p>
+<h3 id="难就是新"><a href="#难就是新" class="headerlink" title="难就是新"></a>难就是新</h3><p>中顶会可太难了。所以审稿人就常觉得，一个工作，无论是思路还是技术方案，得看起来有点难度有点门槛才好。 仿佛文章作者必须得呕心沥血鞠躬尽瘁，这文章才配被录用。尤其是那些小白审稿人，特偏爱那种看起来颇费周折才能做出来的文章。</p>
+<p>但一个简约的思路，往往意味着删繁就简，去糟取精，直捣黄龙。这才是科学家该干的事儿。</p>
+<p>一个简单的思路，可以意义重大，当然，也有一定几率确是一个无足轻重的改进。这就考验审稿人的水平了，如果一篇论文提了一个很小的点， 但这个点直击症结，取得了其他类似方法都难以望其项背的效果。那么这个微创新，就很有可能不是无足轻重的那种，这工作录用了，整个领域都会受此启发。</p>
+<h3 id="离谱就是新"><a href="#离谱就是新" class="headerlink" title="离谱就是新"></a>离谱就是新</h3><p>不走寻常路往往就是创新之路。甚至从定义上来说，创新就是离经叛道，一条未曾有人涉足的道。但这种惊喜的感觉，往往是转瞬即逝的， 当听到一个很棒的主意，你觉得格局大开，但慢慢地，你会认为这个主意“理所当然”，而且往往是，想法越屌，大家就越容易认为它“理所当然”。 比如这个很典型的审稿意见</p>
+<blockquote>
+<p>这不是很显而易见嘛，这不就是A+B?</p>
+</blockquote>
+<p>理所当然是创新的反义词，所以，如果听完后觉得一个思路理所当然，审稿人往往就会草草下“创新性不够”的结论。但你应该站在一个过去式的视角来看待这个问题， 没审这篇文章之前，你能“理所当然”地想到要这么干嘛？能第一个想到应该这么干，然后干出来了，这本身就是创新。 所以，无论是解释起来很容易，还是一切看起来理所当然，都无损于想法本身的创新性。</p>
+<h3 id="技术含量就是新"><a href="#技术含量就是新" class="headerlink" title="技术含量就是新"></a>技术含量就是新</h3><p>审稿人最常见的错误观念，就是觉得创新性和技术细节是绑定在一块的。创新性不光指方法论，它可以有很多表现形式，如果一个数据集有一些已有数据集没有的新特性， 哪怕采集制作这个数据集用到的方法没新意，这个数据集本身也是创新的。<strong>方法论也一样，旧瓶装新酒也可以啊，只要别人没想过原来你可以这么装。就是单纯把一个复杂的模块简单化，也可以给人启发</strong>。</p>
+<p>创新性就像刚才说的“妙”这个词一样，是可以横看成岭侧成峰，远近高低各不同的。在你批评一个工作没有技术创新的时候，扪心自问一句，是不是管中窥豹，格局小了。</p>
+<h3 id="有用就是新"><a href="#有用就是新" class="headerlink" title="有用就是新"></a>有用就是新</h3><p>不是所有创新都有用处的。它们只是新而已，并不一定真有什么实用价值。但这些可能没什么卵用，但又着实新奇的脑洞，可能会把我们引到一些未曾设想的道路上。所以，审稿人得格外小心一点。 我们很难洞悉这些所谓的“歧途”会把领域引向未知的何处，得承认自己的局限性，我们现在做的各种预测，说白了，也还是跳不出当下现状的窠臼。比如，我常常会看到这样的审稿意见</p>
+<blockquote>
+<p>作者提了一个方法，然而这一切并没有任何卵用</p>
+</blockquote>
+<p>“没有卵用”确实是一个问题，但如果要用这个词来评价一个新脑洞，还是有点操之过急了。审稿人心里要有X数，要有敬畏心理，不要对自己的想象力有过高的估计。</p>
+<h3 id="一点人生经验"><a href="#一点人生经验" class="headerlink" title="一点人生经验"></a>一点人生经验</h3><p>我早期的研究，主要是把鲁棒性统计 (Robust Statistics) 和马尔科夫随机场 (Markov Random Field) 联系了起来，如果说有点创新性，那就是之前确实没人想过可以这么干。 但这套A+B的打法可以搞出来很多有意思的玩意儿，做大了学术的蛋糕，基于此，也延伸出一些新的理论。 我很幸运，尽管开始做的时候没太考虑实用性的事，但现在重新回看这些工作，它们的价值已然显现，之后诸多效果拔群的实用算法都受此启发。</p>
+<p>站在事后诸葛亮的角度，你当然可以说，鲁棒性检测和计算机视觉科学的关联是“显而易见的”。 现在，在计算机视觉任务中使用鲁棒检测器，已然是标配，并不比呼吸新鲜到哪里去。 但站在当年那个的时间点，当那个第一个吃螃蟹的人，却是小婴儿喘的第一口气。</p>
+<p>人一辈子，会有很多次让你兴奋的时刻，但没有哪一种兴奋，可以比得上智性的火花划破科学长空的那一霎。一切如惊鸿般短暂，却像夏花一般绚烂。</p>
+<blockquote>
+<p>“众里寻她千百度，蓦然回首，那人却在灯火阑珊处”。</p>
+</blockquote>
+<p>灵光一现，你仿佛有了二郎神的第三只眼， 获得了一种全新的洞察世界的角度。你独自屹立在世界尽头的山巅，领略了前人从未曾欣赏过的风景，这就是创见的力量。 闪念的火花，转瞬即逝，但为了一次又一次追逐这一刹那的火花，我已然在科学的路上颠沛流离了一生。</p>
+<p>最后需要做的，只不过是把这个抽象的闪念，翻译成具象的代码，实验以及文字。在这个过程中，美妙的思维火花可能只是隐隐约约地闪烁在脑海。 而我对诸位审稿人的请求，即是共情，想象你就是撰稿人，正处在火花飞扬前的黑夜。</p>
+<h3 id="杂记"><a href="#杂记" class="headerlink" title="杂记"></a>杂记</h3><p>目前的时间是2022-02-14，此时的我处理正处于研究生二年级。时间拉回到半年前，还没有阅读足够多的论文，读论文也是纯读论文储备知识，并没有全心全意的发现问题。 经历一个人从零开始写论文，投稿论文这些个过程。在读论文的时候，认为合格的NLP的研究应该是作出 BERT，Transformer，LSTM 这样的工作才能够发表在ACL这种会议之上。直到完全自己思考如何去写出一篇“合格”的论文的时候，才体会到自己的幼稚。其实随着现在论文阅读和知识积累，其实每一个突破性的工作也并不然全是新的idea。以后评价一个好的工作，应该是他能够为后续领域发展起到什么样的作用？所以现阶段还是要多读论文，重读经典的论文，提升自己的鉴赏力。</p>
+<p>我的整个下半年，大概是就是根据自己的兴趣，“走马观花”的阅读了许多的论文，觉得没有意思论文就会简单的跳过。回首整个过程中最大的问题是：没有及时和老师反馈，沟通，而是和同学私下吐槽论文或者说是互相安慰罢。</p>
+<p>顺带一提，在CCF的推荐列表之中，将ACL/EMNLP/NAACL分别列A/B/C。我感到有点奇怪，有次问师兄，为什么被公认的三个顶会之一的NAACL是C会呢，不是出了BERT这样的工作吗？而且很多大佬都会投这个会？师兄回答道：“没办法，现实就是在国内的有用的不是你所谓的顶会，而是按照A/B/C来衡量你的学术水平，至少在我们学院是这样的，既然都是顶会，同等难度下，我们为什么不投ACL/EMNLP呢，一举两得也不会留下隐患”。</p>
+<p>看到知乎上面的大佬们对某某会议的质量和奇葩的拒稿理由的一片声讨之中，乐意去翻找 “现在的会议全是灌水”，“现在的会议真是一届不如一届了”，“真正的研究应该是，踏踏实实的工作，慢工出细活”。去寻找认同感，稍微给自己安慰一下。也许在一年前我会毫不思索进行一番“批判”，顺带嘲讽一下国内的研究风气。也许是经过了“捶打”，尽管我依旧无法赞同，现在只是我会点点头，然后并不作声，试图从一种“存在即合理”的思维去分析现象进而得到结论，似乎到现在也没有得到什么结论。</p>
+<blockquote>
+<p>对于任何事物的时候，永远要谦虚的学习，不要轻易去评价一个自己没有得到过的东西。</p>
+</blockquote>
+<blockquote>
+<p>要清醒的认识到大多数都是普通人，都是平凡，平庸的一个人，只是网络时代把天才放到了聚光灯之下才会让人觉得世界是如此的层次不齐。</p>
+</blockquote>
+<p>首先，应当努力做好自己，然后再和去对比其他人，不断学习和探索。</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/reading/">Reading</a></li>
+         
+          <li><a href="/datasets/">Datasets</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/recording/">Recording</a></li>
+         
+          <li><a href="/links/">Links</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%B0%B1%E6%98%AF%E6%96%B0"><span class="toc-number">1.</span> <span class="toc-text">复杂就是新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%BE%E5%B0%B1%E6%98%AF%E6%96%B0"><span class="toc-number">2.</span> <span class="toc-text">难就是新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A6%BB%E8%B0%B1%E5%B0%B1%E6%98%AF%E6%96%B0"><span class="toc-number">3.</span> <span class="toc-text">离谱就是新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E5%90%AB%E9%87%8F%E5%B0%B1%E6%98%AF%E6%96%B0"><span class="toc-number">4.</span> <span class="toc-text">技术含量就是新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E7%94%A8%E5%B0%B1%E6%98%AF%E6%96%B0"><span class="toc-number">5.</span> <span class="toc-text">有用就是新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%82%B9%E4%BA%BA%E7%94%9F%E7%BB%8F%E9%AA%8C"><span class="toc-number">6.</span> <span class="toc-text">一点人生经验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%82%E8%AE%B0"><span class="toc-number">7.</span> <span class="toc-text">杂记</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&text=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&title=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&is_video=false&description=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么&body=Check out this article: http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&title=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&title=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&title=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&title=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&name=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/02/11/Paper-%E8%BD%AC-%E5%BD%93%E6%88%91%E4%BB%AC%E8%B0%88%E7%A7%91%E5%AD%A6%E7%A0%94%E7%A9%B6%E7%9A%84%E5%88%9B%E6%96%B0%E6%80%A7-Novelty-%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E8%B0%88%E4%BA%9B%E4%BB%80%E4%B9%88/&t=Paper-[转]当我们谈科学研究的创新性(Novelty)时，我们在谈些什么"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2022
+    yangjing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/reading/">Reading</a></li><!--
+     --><!--
+       --><li><a href="/datasets/">Datasets</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/recording/">Recording</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'yangjingla/comments';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="本文主要记录在信息抽取比赛之中的一些常见trick以及代码实现。在Notes-信息抽取落地场景Trick(一)会总结分享一些在工业界做信息抽取的一些tricks。 数据分析 数据格式 首先转换格式，赛题原始数据， 赛题提交数据格式   数据文本长度（最大，最小，平均） 数据类别是否平衡 数据规模的大小 数据标注质量如何  数据清理数据增强 数据清理，数据增强的第一部分首先是数据清理。 能够使用额外">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Notes-信息抽取比赛Trick(二)">
+<meta property="og:url" content="http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/index.html">
+<meta property="og:site_name" content="Yang Jing">
+<meta property="og:description" content="本文主要记录在信息抽取比赛之中的一些常见trick以及代码实现。在Notes-信息抽取落地场景Trick(一)会总结分享一些在工业界做信息抽取的一些tricks。 数据分析 数据格式 首先转换格式，赛题原始数据， 赛题提交数据格式   数据文本长度（最大，最小，平均） 数据类别是否平衡 数据规模的大小 数据标注质量如何  数据清理数据增强 数据清理，数据增强的第一部分首先是数据清理。 能够使用额外">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-19T12:52:56.000Z">
+<meta property="article:modified_time" content="2022-02-24T13:18:24.303Z">
+<meta property="article:author" content="yangjing">
+<meta property="article:tag" content="Notes">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.jpg">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.jpg" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg">
+        
+      
+    
+    <!-- title -->
+    <title>Notes-信息抽取比赛Trick(二)</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Yang Jing" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/reading/">Reading</a></li><!--
+     --><!--
+       --><li><a href="/datasets/">Datasets</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/recording/">Recording</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2022/02/18/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E8%90%BD%E5%9C%B0%E5%9C%BA%E6%99%AF%E7%9A%84Trick%EF%BC%88%E4%BA%8C%EF%BC%89/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&text=Notes-信息抽取比赛Trick(二)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&title=Notes-信息抽取比赛Trick(二)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&is_video=false&description=Notes-信息抽取比赛Trick(二)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Notes-信息抽取比赛Trick(二)&body=Check out this article: http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&title=Notes-信息抽取比赛Trick(二)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&title=Notes-信息抽取比赛Trick(二)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&title=Notes-信息抽取比赛Trick(二)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&title=Notes-信息抽取比赛Trick(二)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&name=Notes-信息抽取比赛Trick(二)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&t=Notes-信息抽取比赛Trick(二)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">数据分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">数据清理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA"><span class="toc-number">3.</span> <span class="toc-text">数据增强</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E6%8A%97%E8%AE%AD%E7%BB%83"><span class="toc-number">5.</span> <span class="toc-text">对抗训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%99%AA%E9%9F%B3%E5%A4%84%E7%90%86"><span class="toc-number">6.</span> <span class="toc-text">噪音处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BadCase%E5%88%86%E6%9E%90"><span class="toc-number">7.</span> <span class="toc-text">BadCase分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="toc-number">8.</span> <span class="toc-text">交叉验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88"><span class="toc-number">9.</span> <span class="toc-text">模型融合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Code"><span class="toc-number">10.</span> <span class="toc-text">Code</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">11.</span> <span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Notes-信息抽取比赛Trick(二)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">yangjing</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-02-19T12:52:56.000Z" itemprop="datePublished">2022-02-19</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Notes/" rel="tag">Notes</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>本文主要记录在信息抽取比赛之中的一些常见trick以及代码实现。在Notes-信息抽取落地场景Trick(一)会总结分享一些在工业界做信息抽取的一些tricks。</p>
+<h2 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h2><ul>
+<li>数据格式<ul>
+<li>首先转换格式，赛题原始数据， 赛题提交数据格式</li>
+</ul>
+</li>
+<li>数据文本长度（最大，最小，平均）</li>
+<li>数据类别是否平衡</li>
+<li>数据规模的大小</li>
+<li>数据标注质量如何</li>
+</ul>
+<h2 id="数据清理"><a href="#数据清理" class="headerlink" title="数据清理"></a>数据清理</h2><h2 id="数据增强"><a href="#数据增强" class="headerlink" title="数据增强"></a>数据增强</h2><ul>
+<li>数据清理，数据增强的第一部分首先是数据清理。</li>
+<li>能够使用额外的数据集</li>
+</ul>
+<h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><ul>
+<li>不平衡损失函数</li>
+<li>多分类损失函数</li>
+</ul>
+<h2 id="对抗训练"><a href="#对抗训练" class="headerlink" title="对抗训练"></a>对抗训练</h2><h2 id="噪音处理"><a href="#噪音处理" class="headerlink" title="噪音处理"></a>噪音处理</h2><h2 id="BadCase分析"><a href="#BadCase分析" class="headerlink" title="BadCase分析"></a>BadCase分析</h2><h2 id="交叉验证"><a href="#交叉验证" class="headerlink" title="交叉验证"></a>交叉验证</h2><h2 id="模型融合"><a href="#模型融合" class="headerlink" title="模型融合"></a>模型融合</h2><h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li>信息抽取的模型的融合策略 <a target="_blank" rel="noopener" href="https://github.com/hy-struggle/ccks_ner">https://github.com/hy-struggle/ccks_ner</a></li>
+<li><a target="_blank" rel="noopener" href="https://bj.bcebos.com/v1/conference/ccks2020/eval_paper/ccks2020_eval_paper_8_1.pdf">基于异构编码和词增强的试验鉴定命名实体识别方法</a></li>
+</ul>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/reading/">Reading</a></li>
+         
+          <li><a href="/datasets/">Datasets</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/recording/">Recording</a></li>
+         
+          <li><a href="/links/">Links</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">数据分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">数据清理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA"><span class="toc-number">3.</span> <span class="toc-text">数据增强</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E6%8A%97%E8%AE%AD%E7%BB%83"><span class="toc-number">5.</span> <span class="toc-text">对抗训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%99%AA%E9%9F%B3%E5%A4%84%E7%90%86"><span class="toc-number">6.</span> <span class="toc-text">噪音处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BadCase%E5%88%86%E6%9E%90"><span class="toc-number">7.</span> <span class="toc-text">BadCase分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="toc-number">8.</span> <span class="toc-text">交叉验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88"><span class="toc-number">9.</span> <span class="toc-text">模型融合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Code"><span class="toc-number">10.</span> <span class="toc-text">Code</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">11.</span> <span class="toc-text">Reference</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&text=Notes-信息抽取比赛Trick(二)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&title=Notes-信息抽取比赛Trick(二)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&is_video=false&description=Notes-信息抽取比赛Trick(二)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Notes-信息抽取比赛Trick(二)&body=Check out this article: http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&title=Notes-信息抽取比赛Trick(二)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&title=Notes-信息抽取比赛Trick(二)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&title=Notes-信息抽取比赛Trick(二)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&title=Notes-信息抽取比赛Trick(二)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&name=Notes-信息抽取比赛Trick(二)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/02/19/Notes-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%AF%94%E8%B5%9BTrick-%E4%B8%80/&t=Notes-信息抽取比赛Trick(二)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2022
+    yangjing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/reading/">Reading</a></li><!--
+     --><!--
+       --><li><a href="/datasets/">Datasets</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/recording/">Recording</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'yangjingla/comments';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
