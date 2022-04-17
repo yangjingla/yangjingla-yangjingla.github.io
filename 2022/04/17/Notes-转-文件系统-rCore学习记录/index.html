@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="跟着女朋友学习操作系统系列ORZ  文件系统-rCore学习记录常规文件在操作系统的用户看来，常规文件是保存在持久存储设备上的一个字节序列，每个常规文件都有一个 文件名 (Filename) ，用户需要通过它来区分不同的常规文件。在 Linux 系统上， stat 工具可以获取文件的一些信息。 123456789stat main.rsFile: main.rsSize: 940">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Notes-[转]文件系统-rCore学习记录">
+<meta property="og:url" content="http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="Yang Jing">
+<meta property="og:description" content="跟着女朋友学习操作系统系列ORZ  文件系统-rCore学习记录常规文件在操作系统的用户看来，常规文件是保存在持久存储设备上的一个字节序列，每个常规文件都有一个 文件名 (Filename) ，用户需要通过它来区分不同的常规文件。在 Linux 系统上， stat 工具可以获取文件的一些信息。 123456789stat main.rsFile: main.rsSize: 940">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-04-17T10:46:53.000Z">
+<meta property="article:modified_time" content="2022-04-17T10:55:47.513Z">
+<meta property="article:author" content="yangjing">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.jpg">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.jpg" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.jpg">
+        
+      
+    
+    <!-- title -->
+    <title>Notes-[转]文件系统-rCore学习记录</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/true" title="Yang Jing" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/reading/">Reading</a></li><!--
+     --><!--
+       --><li><a href="/datasets/">Datasets</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/recording/">Recording</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2022/04/17/Notes-%E8%BD%AC-I-O%E8%AE%BE%E5%A4%87-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2022/04/03/Life-%E8%AF%BB%E4%B9%A6%E6%9D%82%E8%AE%B0%E3%80%8A%E8%B7%A8%E8%B6%8A%E8%BE%B9%E7%95%8C%E7%9A%84%E7%A4%BE%E5%8C%BA%EF%BC%9A%E6%B5%99%E6%B1%9F%E6%9D%91%E7%94%9F%E6%B4%BB%E5%8F%B2%E3%80%8B/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&text=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&title=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&is_video=false&description=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Notes-[转]文件系统-rCore学习记录&body=Check out this article: http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&title=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&title=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&title=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&title=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&name=Notes-[转]文件系统-rCore学习记录&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&t=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">文件系统-rCore学习记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text">常规文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">1.2.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.3.</span> <span class="toc-text">文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%97%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%8F%A3%E5%B1%82"><span class="toc-number">1.3.1.</span> <span class="toc-text">块设备接口层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%97%E7%BC%93%E5%AD%98%E5%B1%82"><span class="toc-number">1.3.2.</span> <span class="toc-text">块缓存层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E4%B8%8A%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.3.</span> <span class="toc-text">磁盘上的数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E5%9D%97%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-number">1.3.4.</span> <span class="toc-text">磁盘块管理器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E8%8A%82%E7%82%B9"><span class="toc-number">1.3.5.</span> <span class="toc-text">索引节点</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Notes-[转]文件系统-rCore学习记录
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">yangjing</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-04-17T10:46:53.000Z" itemprop="datePublished">2022-04-17</time>
+        
+        (Updated: <time datetime="2022-04-17T10:55:47.513Z" itemprop="dateModified">2022-04-17</time>)
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <hr>
+<p>跟着女朋友学习操作系统系列ORZ</p>
+<hr>
+<h1 id="文件系统-rCore学习记录"><a href="#文件系统-rCore学习记录" class="headerlink" title="文件系统-rCore学习记录"></a>文件系统-rCore学习记录</h1><h2 id="常规文件"><a href="#常规文件" class="headerlink" title="常规文件"></a>常规文件</h2><p>在操作系统的用户看来，常规文件是保存在持久存储设备上的一个字节序列，每个常规文件都有一个 <strong>文件名</strong> (Filename) ，用户需要通过它来区分不同的常规文件。在 Linux 系统上， <code>stat</code> 工具可以获取文件的一些信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">stat main.rs</span><br><span class="line">File: main.rs</span><br><span class="line">Size: 940           Blocks: 8          IO Block: 4096   regular file</span><br><span class="line">Device: 801h/2049d  Inode: 4975        Links: 1</span><br><span class="line">Access: (0644/-rw-r--r--)  Uid: ( 1000/   oslab)   Gid: ( 1000/   oslab)</span><br><span class="line">Access: 2021-02-28 23:32:50.289925450 +0800</span><br><span class="line">Modify: 2021-02-28 23:32:50.133927136 +0800</span><br><span class="line">Change: 2021-02-28 23:32:50.133927136 +0800</span><br><span class="line">Birth: -</span><br></pre></td></tr></table></figure>
+
+<p><code>stat</code> 工具展示了 <code>main.rs</code> 的如下信息：</p>
+<ul>
+<li>File 表明它的文件名为 <code>main.rs</code> 。</li>
+<li>Size 表明它的字节大小为 940 字节。</li>
+<li>Blocks 表明它占据 8 个 <strong>块</strong> (Block) 来存储。在文件系统中，文件的数据以块为单位进行存储。在 IO Block 可以看出，在 Linux操作系统中的Ext4文件系统的每个块的大小为 4096 字节。</li>
+<li>regular file 表明这个文件是一个常规文件。</li>
+<li>当文件是一个特殊文件（如块设备文件或者字符设备文件）的时候，Device 将指出该特殊文件的 major/minor ID 。对于一个常规文件，我们无需关心它。</li>
+<li>Inode 表示文件的底层编号。在文件系统的底层实现中，并不是直接通过文件名来索引文件，而是首先需要将文件名转化为文件的底层编号，再根据这个编号去索引文件。</li>
+<li>Links 给出文件的硬链接数。同一个文件系统中如果两个文件（目录也是文件）具有相同的inode号码，那么就称它们是“硬链接”关系。这样links的值其实是一个文件的不同文件名的数量。</li>
+<li>Uid 给出该文件的所属的用户 ID ， Gid 给出该文件所属的用户组 ID 。</li>
+<li>Access/Modify 分别给出该文件的最近一次访问/最近一次修改时间。</li>
+</ul>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p>最早的文件系统仅仅通过文件名来区分文件，但是这会造成一些归档和管理上的困难。如今我们的使用习惯是将文件根据功能、属性的不同分类归档到不同层级的目录之下。这样我们就很容易逐级找到想要的文件。结合用户和用户组的概念，目录的存在也使得文件访问权限控制更加容易，只需要对于目录进行设置就可以间接设置用户/用户组对该目录下所有文件的访问权限，这使得操作系统能够更加安全的支持多用户情况下对不同文件的访问。</p>
+<p>我们使用<code>stat</code>来更好说明目录与常规文件的区别。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">stat os</span><br><span class="line">File: os</span><br><span class="line">Size: 4096          Blocks: 8          IO Block: 4096   directory</span><br><span class="line">Device: 801h/2049d  Inode: 4982        Links: 5</span><br><span class="line">Access: (0755/drwxr-xr-x)  Uid: ( 1000/   oslab)   Gid: ( 1000/   oslab)</span><br><span class="line">Access: 2021-02-28 23:32:50.133927136 +0800</span><br><span class="line">Modify: 2021-02-28 23:32:50.129927180 +0800</span><br><span class="line">Change: 2021-02-28 23:32:50.129927180 +0800</span><br><span class="line">Birth: -</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>directory 表明 <code>os</code> 是一个目录，从 Access 字符串的首位 <code>d</code> 也可以看出这一点。对于目录而言， Access 的 <code>rwx</code> 含义有所不同：<code>r</code> 表示是否允许获取该目录下有哪些文件和子目录；<code>w</code> 表示是否允许在该目录下创建/删除文件和子目录；<code>x</code> 表示是否允许“通过”该目录。</li>
+<li>Blocks 给出 <code>os</code> 目录也占用 8 个块进行存储。实际上目录也可以看作一种文件，它也有属于自己的底层编号，它的内容中保存着若干 <strong>目录项</strong> (Dirent, Directory Entry) ，可以看成一组映射，根据它下面的文件名或子目录名能够查到文件和子目录在文件系统中的底层编号，即 Inode 编号。</li>
+</ul>
+<h2 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h2><p>常规文件和目录都是实际保存在持久存储设备中的。持久存储设备仅支持以扇区（或块）为单位的随机读写。文件系统负责将逻辑上的目录树结构（包括其中每个文件或目录的数据和其他信息）映射到持久存储设备上，决定设备上的每个扇区应存储哪些内容。反过来，文件系统也可以从持久存储设备还原出逻辑上的目录树结构。</p>
+<p>文件系统有很多种不同的实现，每一种都能将同一个逻辑上目录树结构转化为一个不同的持久存储设备上的扇区布局。最著名的文件系统有 Windows 上的FAT/NTFS 和 Linux 上的 Ext3/Ext4/Btrfs 等。</p>
+<p>在一个计算机系统中，可以同时包含多个持久存储设备，它们上面的数据可能是以不同文件系统格式存储的。为了能够对它们进行统一管理，在内核中有一层 <strong>虚拟文件系统</strong> (VFS, Virtual File System) ，它规定了逻辑上目录树结构的通用格式及相关操作的抽象接口，只要不同的底层文件系统均实现虚拟文件系统要求的那些抽象接口，再加上 <strong>挂载</strong> (Mount) 等方式，这些持久存储设备上的不同文件系统便可以用一个统一的逻辑目录树结构一并进行管理。</p>
+<p>我们以<code>rCore</code>中简化的文件系统来详细展示文件系统的原理。其设计主要分为以下几个层次。</p>
+<ul>
+<li><p>磁盘块设备接口层：定义了以块大小为单位对磁盘块设备进行读写的接口，避免了与设备驱动的绑定。</p>
+</li>
+<li><p>块缓存层：在内存中缓存磁盘块的数据，避免频繁读写磁盘。</p>
+</li>
+<li><p>磁盘数据结构层：磁盘上的超级块、位图、索引节点、数据块、目录项等核心数据结构和相关处理。</p>
+</li>
+<li><p>磁盘块管理器层：合并了上述核心数据结构和磁盘布局所形成的磁盘文件系统数据结构，以及基于这些结构的创建/打开文件系统的相关处理和磁盘块的分配和回收处理。</p>
+</li>
+<li><p>索引节点层：管理索引节点（即文件控制块）数据结构，并实现文件创建/文件打开/文件读写等成员函数来向上支持文件操作相关的系统调用。</p>
+</li>
+</ul>
+<h3 id="块设备接口层"><a href="#块设备接口层" class="headerlink" title="块设备接口层"></a>块设备接口层</h3><p>块设备接口层定义了两个抽象方法。</p>
+<ul>
+<li>将编号为 <code>block_id</code> 的块从磁盘读入内存中的缓冲区</li>
+<li>将内存缓冲区中的数据写入磁盘号为<code>block_id</code> 的块</li>
+</ul>
+<p>这些方法需要由具体的块设备驱动程序实现。体现了<strong>虚拟文件系统</strong> (VFS, Virtual File System) 的思想，即规定了相关操作的抽象接口，屏蔽了实现细节，体现了泛用性。</p>
+<p><strong>Note:</strong> 块和扇区是两个不同的概念。 <strong>扇区</strong> (Sector) 是块设备随机读写的数据单位，通常每个扇区为 512 字节。而块是文件系统存储文件时的数据单位，每个块的大小等同于一个或多个扇区。之前提到过 Linux 的Ext4文件系统的单个块大小默认为 4096 字节。而在rCore中，一个块和一个扇区同为 512 字节，因此在后面的讲解中我不再区分扇区和块的概念。</p>
+<h3 id="块缓存层"><a href="#块缓存层" class="headerlink" title="块缓存层"></a>块缓存层</h3><p>由于操作系统频繁读写速度缓慢的磁盘块会极大降低系统性能，因此常见的手段是先将一个块上的数据从磁盘读到内存中的一个缓冲区中，这个缓冲区中的内容是可以直接读写的，那么后续对这个数据块的大部分访问就可以在内存中完成了。如果缓冲区中的内容被修改了，那么后续还需要将缓冲区中的内容写回到磁盘块中。</p>
+<p>从性能上考虑，需要尽可能降低实际块读写的次数，因为每一次调用它们都会产生大量开销。要做到这一点，关键就在于对块读写操作进行 <strong>合并</strong> 。例如，如果一个块已经被读到缓冲区中了，那么我们就没有必要再读一遍，直接用已有的缓冲区就行了；同时，对于缓冲区中的同一个块的多次修改没有必要每次都写回磁盘，只需等所有的修改都结束之后统一写回磁盘即可。</p>
+<p>当磁盘上的数据结构比较复杂的时候，很难通过应用来合理地规划块读取/写入的时机。因为这不仅可能涉及到复杂的参数传递，稍有不慎还有可能引入同步性问题：即一个块缓冲区修改后的内容在后续的同一个块读操作中不可见，这很致命但又难以调试。</p>
+<p>因此，rCore的做法是将缓冲区统一管理起来。当要读写一个块的时候，首先就是去全局管理器中查看这个块是否已被缓存到内存缓冲区中。如果是这样，则在一段连续时间内对于一个块进行的所有操作均是在同一个固定的缓冲区中进行的，这解决了同步性问题。此外，块实际读写的时机完全交给块缓存层的全局管理器处理，上层子系统无需操心。全局管理器会尽可能将更多的块操作合并起来，并在必要的时机发起真正的块实际读写。<strong>这个时机是什么意思呢？</strong>举个例子。在Rust中，每一个缓存块都与一个结构体（<code>BlockCache</code>）的实例对应，<code>BlockCache</code> 的设计体现了 <strong>RAII 思想</strong>， 它管理着一个缓冲区的生命周期。当 <code>BlockCache</code> 的生命周期结束之后缓冲区也会被从内存中回收，我们可以在BlockCache的drop函数（类似与C++的析构函数）中加入判断此块是否修改，若修改则写磁盘的函数。</p>
+<h3 id="磁盘上的数据结构"><a href="#磁盘上的数据结构" class="headerlink" title="磁盘上的数据结构"></a>磁盘上的数据结构</h3><p>rCore中的磁盘布局，按照块编号从小到大地分成5个不同属性的连续区域。</p>
+<ul>
+<li>最开始的区域的长度为一个块，其内容是 <strong>超级块</strong>。超级块内以魔数的形式提供了文件系统合法性检查功能，同时还可以定位其他连续区域的位置。</li>
+<li>第二个区域是一个<strong>索引节点位图</strong> ，长度为若干个块。它记录了后面的索引节点区域中有哪些索引节点已经被分配出去使用了，而哪些还尚未被分配出去。</li>
+<li>第三个区域是<strong>索引节点区域</strong>，长度为若干个块。其中的每个块都存储了若干个索引节点。</li>
+<li>第四个区域是一个<strong>数据块位图</strong>，长度为若干个块。它记录了后面的数据块区域中有哪些数据块已经被分配出去使用了，而哪些还尚未被分配出去。</li>
+<li>最后的区域则是<strong>数据块区域</strong>，顾名思义，其中的每一个已经分配出去的块保存了文件或目录中的具体数据内容。</li>
+</ul>
+<ol>
+<li><p>超级块</p>
+<p>超级块包括一个用于文件系统合法性验证的魔数，文件系统的总块数。注意这并不等同于所在磁盘的总块数，因为文件系统很可能并没有占据整个磁盘。以及四个连续区域的长度各为多少个块。</p>
+</li>
+<li><p>位图</p>
+<p>rCore中存在两类不同的位图，分别对索引节点和数据块进行管理。每个位图都由若干个块组成，每个块大小为 512 bytes，即 4096 bits。每个 bit 都代表一个索引节点/数据块的分配状态， 0 意味着未分配，而 1 则意味着已经分配出去。位图所要做的事情是通过基于 bit 为单位的分配（寻找一个为 0 的bit位并设置为 1）和回收（将bit位清零）来进行索引节点/数据块的分配和回收。如何对位图数据结构解析，如何根据bit所在的位置求出索引节点/数据块的编号，有不同的设计。可参考<a target="_blank" rel="noopener" href="https://gitee.com/rcore-os/rCore-Tutorial-Book-v3/blob/main/source/chapter6/2fs-implementation.rst">rCore easy-fs</a>。</p>
+</li>
+<li><p>索引节点（为了与后面的索引节点区分，此处的索引节点都为DiskInode）</p>
+<p>索引节点包含文件/目录内容的字节数，文件的类型，存储文件内容/目录内容的数据块的索引等信息。rCore中索引方式分成直接索引和间接索引两种。</p>
+<ul>
+<li>当文件很小的时候，只需用到直接索引，直接索引就是在索引节点中存储的就是内容数据块的索引。rCore中一个索引节点中最多可以指向 <code>INODE_DIRECT_COUNT</code> 个数据块，当取值为 28 的时候，通过直接索引可以找到 14KiB 的内容。</li>
+<li>当文件比较大的时候，不仅能将索引节点中直接索引数组装满，还需要用到一级间接索引。一级间接索引指向一个一级索引块，这个块位于磁盘布局的数据块区域中。这个一级索引块中的每一项都用来指向数据块区域中一个保存该文件内容的数据块，因此，最多能够索引 <em>512/每项大小</em> 个数据块。</li>
+<li>当文件大小超过直接索引和一级索引支持的容量上限的时候，就需要用到二级间接索引。它指向一个位于数据块区域中的二级索引块。二级索引块中的每个 指向一个不同的一级索引块，这些一级索引块也位于数据块区域中。</li>
+</ul>
+<p>索引节点需要提供最重要的数据块索引功能，它可以从索引中查到它自身用于保存文件内容的第block_id个数据块的块编号。 </p>
+</li>
+<li><p> 数据块区域</p>
+</li>
+</ol>
+<p>   作为一个文件而言，它的内容在文件系统看来没有任何既定的格式，都只是一个字节序列。因此每个保存内容的数据块都只是一个字节数组。然而，目录的内容却需要遵从一种特殊的格式，在rCore中，它可以看成一个目录项的序列，每个目录项都是一个二元组，二元组的首个元素是目录下面的一个文件（或子目录）的文件名（或目录名），另一个元素则是文件（或子目录）所在的索引节点编号。目录项相当于目录树结构上的子树节点，我们需要通过它来一级一级的找到实际要访问的文件或目录。                                                                                                                            </p>
+<h3 id="磁盘块管理器"><a href="#磁盘块管理器" class="headerlink" title="磁盘块管理器"></a>磁盘块管理器</h3><p>注意从这一层开始，所有的数据结构就都放在内存上了。磁盘管理器实现了整体磁盘布局。在创建一个磁盘管理器的时候，需要根据 inode 位图的大小计算 inode 区域至少需要多少个块才能够使得 inode 位图中的每个bit都能够有一个实际的 inode 可以对应，这样就确定了 inode 位图区域和 inode 区域的大小。剩下的块都分配给数据块位图区域和数据块区域。此时数据块位图中的每个bit应能够对应到一个数据块，但是数据块位图又不能过小，不然会造成某些数据块永远不会被使用。因此数据块位图区域最合理的大小是剩余的块数除以 4097 再上取整，因为位图中的每个块能够对应 4096 个数据块。其余的块就都作为数据块使用。</p>
+<p>当从一个写入了文件系统镜像的块设备上打开文件系统时，它只需将块设备编号为 0 的块作为超级块读取进来，就可以从中知道文件系统的磁盘布局，由此可以构造文件系统实例。此时磁盘管理器就能够从 inode位图或数据块位图上分配的 bit 编号，来算出各个存储inode和数据块的磁盘块在磁盘上的实际位置。</p>
+<h3 id="索引节点"><a href="#索引节点" class="headerlink" title="索引节点"></a>索引节点</h3><p>对于文件系统的使用者而言，他们往往不关心磁盘布局是如何实现的，而是更希望能够直接看到目录树结构中逻辑上的文件和目录。为此需要设计索引节点 <code>Inode</code> 暴露给文件系统的使用者，让他们能够直接对文件和目录进行操作。 <code>Inode</code> 和 <code>DiskInode</code> 的区别从它们的名字中就可以看出： <code>DiskInode</code> 放在磁盘块中比较固定的位置，而 <code>Inode</code> 是放在内存中的记录文件索引节点信息的数据结构。为了区分Inode和DiskInode，我将rCore中对此两种数据结构的定义放在下面。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">pub struct DiskInode &#123;</span><br><span class="line">    pub size: u32,//表示文件/目录内容的字节数</span><br><span class="line">    pub direct: [u32; INODE_DIRECT_COUNT],//直接索引</span><br><span class="line">    pub indirect1: u32,//一级间接索引</span><br><span class="line">    pub indirect2: u32,//二级间接索引</span><br><span class="line">    type_: DiskInodeType,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">pub struct Inode &#123;</span><br><span class="line">    block_id: usize,</span><br><span class="line">    block_offset: usize,//记录该 Inode 对应的 DiskInode 保存在磁盘上的具体位置</span><br><span class="line">    fs: Arc&lt;Mutex&lt;EasyFileSystem&gt;&gt;,//fs 是指向 EasyFileSystem 的一个指针，因为对 Inode 的种种操作实际上都是要通过底层的文件系统来完成</span><br><span class="line">    block_device: Arc&lt;dyn BlockDevice&gt;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>文件系统的使用者在从装载了文件系统镜像打开文件系统之后，要做的第一件事情就是获取根目录的 <code>Inode</code>。因为 <code>rCore</code> 目前仅支持绝对路径，对于任何文件/目录的索引都必须从根目录开始向下逐级进行。等到索引完成之后， <code>rCore</code> 才能对文件/目录进行操作。</p>
+<ol>
+<li><p>文件索引</p>
+<p>为了尽可能简化文件系统设计， <code>rCore</code> 是一个扁平化的文件系统，即在目录树上仅有一个目录——那就是作为根节点的根目录。所有的文件都在根目录下面。于是，文件索引的查找比较简单，仅需在根目录的目录项中根据文件名找到文件的 inode 编号即可。由于没有子目录的存在，这个过程只会进行一次。</p>
+</li>
+<li><p>文件创建</p>
+<p>rCore可以在根目录下创建一个文件，首先检查文件是否已经在根目录下，如果找到的话返回 <code>None</code>，不然，为待创建文件分配一个新的 inode 并进行初始化，再将待创建文件的目录项插入到根目录的内容中，使得之后可以索引到。</p>
+</li>
+<li><p>文件读写</p>
+<p>从根目录索引到一个文件之后，可以根据它的block_id<code>和</code>block_offset信息对它进行读写。需要注意的是写操作可能涉及到扩容的操作。</p>
+</li>
+</ol>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/reading/">Reading</a></li>
+         
+          <li><a href="/datasets/">Datasets</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/recording/">Recording</a></li>
+         
+          <li><a href="/links/">Links</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">文件系统-rCore学习记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text">常规文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">1.2.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.3.</span> <span class="toc-text">文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%97%E8%AE%BE%E5%A4%87%E6%8E%A5%E5%8F%A3%E5%B1%82"><span class="toc-number">1.3.1.</span> <span class="toc-text">块设备接口层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%97%E7%BC%93%E5%AD%98%E5%B1%82"><span class="toc-number">1.3.2.</span> <span class="toc-text">块缓存层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E4%B8%8A%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.3.</span> <span class="toc-text">磁盘上的数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E5%9D%97%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-number">1.3.4.</span> <span class="toc-text">磁盘块管理器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E8%8A%82%E7%82%B9"><span class="toc-number">1.3.5.</span> <span class="toc-text">索引节点</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&text=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&title=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&is_video=false&description=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Notes-[转]文件系统-rCore学习记录&body=Check out this article: http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&title=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&title=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&title=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&title=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&name=Notes-[转]文件系统-rCore学习记录&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2022/04/17/Notes-%E8%BD%AC-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-rCore%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/&t=Notes-[转]文件系统-rCore学习记录"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2022
+    yangjing
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/reading/">Reading</a></li><!--
+     --><!--
+       --><li><a href="/datasets/">Datasets</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/recording/">Recording</a></li><!--
+     --><!--
+       --><li><a href="/links/">Links</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'yangjingla/comments';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-light';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
